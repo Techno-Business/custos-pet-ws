@@ -39,35 +39,36 @@ ownerRouter.post('/signup', async (req: express.Request, res: express.Response) 
 });
 
 ownerRouter.post('/signin', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-    
-        const owner = await Owner.findOne({ email });
-    
-        if (!owner) {
-          res.json({ error: true, message: 'No email address found' });
-          return false;
-        }
-    
-        const isPasswordValid = await bcrypt.compare(password, owner.password);
-        if (!isPasswordValid) {
-          res.json({
-            error: true,
-            message: 'Incorrect email address or password',
-          });
-          return false;
-        }
-    
-        // @ts-ignore
-        delete owner.password;
-    
-        res.json({ owner });
-        
-      } catch (err) {
-        if (err instanceof Error) {
-            res.json({ error: true, message: err.message });
-        }
-      }
+    // try {
+    //     const { email, password } = req.body;
+    //
+    //     const owner = await Owner.findOne({ email });
+    //
+    //     if (!owner) {
+    //       res.json({ error: true, message: 'No email address found' });
+    //       return false;
+    //     }
+    //
+    //     const isPasswordValid = await bcrypt.compare(password, owner.password);
+    //     if (!isPasswordValid) {
+    //       res.json({
+    //         error: true,
+    //         message: 'Incorrect email address or password',
+    //       });
+    //       return false;
+    //     }
+    //
+    //     // @ts-ignore
+    //     delete owner.password;
+    //
+    //     res.json({ owner });
+    //
+    //   } catch (err) {
+    //     if (err instanceof Error) {
+    //         res.json({ error: true, message: err.message });
+    //     }
+    //   }
+    return ownerController.signIn(req, res);
 });
 
 ownerRouter.get('/pets/:id', async (req, res) => {

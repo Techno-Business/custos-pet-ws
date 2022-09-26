@@ -4,6 +4,7 @@ import { OwnerSignUpUseCase } from "./useCases/SignUp/OwnerSignUpUseCase";
 import { OwnerSignUpDto } from "./useCases/SignUp/OwnerSignUpDto";
 import { validate } from "class-validator";
 import { OwnerMapper } from "./owner.mapper";
+import { OwnerSignInDto } from "./useCases/SignIn/OwnerSignInDto";
 
 export class OwnerController {
     constructor(
@@ -32,6 +33,32 @@ export class OwnerController {
             const ownerDto = this.ownerMapper.toDto(owner);
 
             return res.status(201).json(ownerDto);
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    async signIn(req: Request, res: Response): Promise<Response<OwnerDto>> {
+        try {
+            const ownerSignInDto = new OwnerSignInDto(
+                "nouzen86@email.com",
+                "realllystrongpassword"
+            );
+
+            const validationErrors = await validate(ownerSignInDto);
+            if (validationErrors.length > 0) {
+                return res.status(400).json(validationErrors.map(v => v.constraints));
+            }
+
+            return res.status(201).json("hello there.")
+
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
