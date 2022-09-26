@@ -8,7 +8,7 @@ import aws from './../services/aws.js';
 
 const router = express.Router();
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: express.Request, res: express.Response) => {
     try {
         const pet = await Pet.findById({
           _id: req.params.id
@@ -20,20 +20,24 @@ router.get('/:id', async (req, res) => {
         }
   
         res.json({ pet });
-  
+
     } catch (err) {
-        res.json({ error: true, message: err.message });
-      }
+        if (err instanceof Error) {
+            res.json({ error: true, message: err.message });
+        }
+    }
 });
 
-router.post('/addpet', async (req, res) => {
+router.post('/addpet', async (req: express.Request, res: express.Response) => {
     try {         
         let errors = [];
-        const petId = mongoose.Types.ObjectId();
+        const petId = mongoose.Types.ObjectId;
         let photo = '';
 
+        // @ts-ignore
         if (req.files) {
-          const file = req.files.photo;
+          // @ts-ignore
+            const file = req.files.photo;
   
           const nameParts = file.name.split('.');
           const fileName = `${petId}.${nameParts[nameParts.length - 1]}`;
@@ -60,18 +64,22 @@ router.post('/addpet', async (req, res) => {
         res.json({ pet });
 
     } catch (err) {
-        res.json({ error: true, message: err.message });
+        if (err instanceof Error) {
+            res.json({ error: true, message: err.message });
+        }
     }
 });
 
-router.put('/editpet/:id', async (req, res) => {
+router.put('/editpet/:id', async (req: express.Request, res: express.Response) => {
     try {
         const petId  = req.params.id; 
         let errors = [];
         let photo = '';
 
+        // @ts-ignore
         if (req.files) {
-          const file = req.files.photo;
+          // @ts-ignore
+            const file = req.files.photo;
   
           const nameParts = file.name.split('.');
           const fileName = `${petId}.${nameParts[nameParts.length - 1]}`;
@@ -97,11 +105,13 @@ router.put('/editpet/:id', async (req, res) => {
         res.json({ pet });
 
     } catch (err) {
-        res.json({ error: true, message: err.message });
+        if (err instanceof Error) {
+            res.json({ error: true, message: err.message });
+        }
     }
 });
 
-router.delete('/deletepet/:id', async (req, res) => {
+router.delete('/deletepet/:id', async (req: express.Request, res: express.Response) => {
     try {
         const petId = req.params.id;
         const pet = await Pet.findByIdAndDelete(petId);
@@ -113,13 +123,15 @@ router.delete('/deletepet/:id', async (req, res) => {
                 petId: pet._id
             });
             res.json({ error: false, message: 'Pet successfully deleted'}); 
-        }   
+        }
     } catch (err) {
-        res.json({ error: true, message: err.message });
+        if (err instanceof Error) {
+            res.json({ error: true, message: err.message });
+        }
     }
 });
 
-router.post('/addcost', async (req, res) => {
+router.post('/addcost', async (req: express.Request, res: express.Response) => {
     try {   
         await new Cost({
             ...req.body
@@ -128,11 +140,13 @@ router.post('/addcost', async (req, res) => {
         res.json({ error: false, message: 'Cost apply' });
 
     } catch (err) {
-        res.json({ error: true, message: err.message });
+        if (err instanceof Error) {
+            res.json({ error: true, message: err.message });
+        }
     }
 });
 
-router.get('/costs/:id', async (req, res) => {
+router.get('/costs/:id', async (req: express.Request, res: express.Response) => {
     try {
 
       const costs = await Cost.find({
@@ -151,7 +165,9 @@ router.get('/costs/:id', async (req, res) => {
      });
 
     } catch (err) {
-      res.json({ error: true, message: err.message });
+        if (err instanceof Error) {
+            res.json({ error: true, message: err.message });
+        }
     }
 });
 

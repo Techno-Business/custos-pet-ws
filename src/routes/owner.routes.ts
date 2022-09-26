@@ -7,10 +7,10 @@ import Pet from '../models/pet.js';
 
 const router = express.Router();
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', async (req: express.Request, res: express.Response) => {
     try {
         const { email } = req.body;
-        const userId = mongoose.Types.ObjectId();
+        const userId = mongoose.Types.ObjectId;
 
         const ownerSearch = await Owner.findOne({ email });
 
@@ -30,7 +30,9 @@ router.post('/signup', async (req, res) => {
         res.json({ owner });
 
     } catch (err) {
-        res.json({ error: true, message: err.message });
+        if (err instanceof Error) {
+            res.json({ error: true, message: err.message });
+        }
     }
 });
 
@@ -54,12 +56,15 @@ router.post('/signin', async (req, res) => {
           return false;
         }
     
+        // @ts-ignore
         delete owner.password;
     
         res.json({ owner });
         
       } catch (err) {
-        res.json({ error: true, message: err.message });
+        if (err instanceof Error) {
+            res.json({ error: true, message: err.message });
+        }
       }
 });
 
@@ -77,8 +82,10 @@ router.get('/pets/:id', async (req, res) => {
       res.json({ pets });
 
   } catch (err) {
-      res.json({ error: true, message: err.message });
-    }
+      if (err instanceof Error) {
+          res.json({ error: true, message: err.message });
+      }
+  }
 });
 
 export default router;
