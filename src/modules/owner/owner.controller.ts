@@ -49,9 +49,11 @@ export class OwnerController {
 
     async signIn(req: Request, res: Response): Promise<Response<OwnerDto>> {
         try {
+            const { email, password } = req.body;
+
             const ownerSignInDto = new OwnerSignInDto(
-                "nouzen86@email.com",
-                "realllystrongpassword"
+                email,
+                password
             );
 
             const validationErrors = await validate(ownerSignInDto);
@@ -60,8 +62,9 @@ export class OwnerController {
             }
 
             const owner = await this.ownerSignInUseCase.execute(ownerSignInDto);
+            const ownerDto = this.ownerMapper.toDto(owner);
 
-            return res.status(201).json("hello there.")
+            return res.status(201).json(ownerDto);
 
         } catch (e) {
             console.log(e);
