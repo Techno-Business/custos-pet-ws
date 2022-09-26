@@ -14,12 +14,15 @@ export class OwnerController {
 
     async signUp(req: Request, res: Response): Promise<Response<OwnerDto>> {
         try {
+            const { firstName, lastName, email, password } = req.body;
+
             const ownerSignUpDto = new OwnerSignUpDto(
-                "Shinei",
-                "Nouzen",
-                "nouzen86@email.com",
-                "rlystr0ngpzzword",
+                firstName,
+                lastName,
+                email,
+                password,
             )
+
             const validationErrors = await validate(ownerSignUpDto);
             if (validationErrors.length > 0) {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
