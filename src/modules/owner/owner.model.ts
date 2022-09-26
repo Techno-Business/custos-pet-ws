@@ -25,6 +25,42 @@ export class OwnerModel {
         this._password = password;
     }
 
+    set id(value: string) {
+        this._id = value;
+    }
+
+    set firstName(value: string) {
+        this._firstName = value;
+    }
+
+    set lastName(value: string) {
+        this._lastName = value;
+    }
+
+    set email(value: string) {
+        this._email = value;
+    }
+
+    set password(value: string) {
+        this._password = value;
+    }
+
+    public get id() {
+        return this._id as string;
+    }
+
+    public get firstName() {
+        return this._firstName;
+    }
+
+    public get lastName() {
+        return this._lastName;
+    }
+
+    public get email() {
+        return this._email;
+    }
+
     public get password() {
         return this._password;
     }
