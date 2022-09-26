@@ -4,10 +4,10 @@ import busboy from 'connect-busboy';
 import busboyBodyParser from 'busboy-body-parser';
 
 import cors from 'cors';
-import './database.js';
+import './infra/database.js';
 
-import ownerRoutes from './src/routes/owner.routes.js';
-import petRoutes from './src/routes/pet.routes.js';
+import ownerRoutes from './modules/owner/owner.routes';
+import petRoutes from './modules/pet/pet.routes';
 
 const app = express();
 

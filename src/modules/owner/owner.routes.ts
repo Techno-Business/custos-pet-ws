@@ -2,8 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-import Owner from '../models/owner.js';
-import Pet from '../models/pet.js';
+import Owner from '../../infra/models/owner.js';
+import Pet from '../../infra/models/pet.js';
 
 const router = express.Router();
 

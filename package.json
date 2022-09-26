@@ -2,9 +2,9 @@
   "name": "custospet",
   "version": "1.0.0",
   "description": "web service custospet",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/index.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js"
   },
@@ -31,6 +31,7 @@
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
     "@types/morgan": "^1.9.3",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.3"
   }
 }

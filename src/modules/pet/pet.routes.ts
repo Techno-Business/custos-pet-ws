@@ -1,10 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 
-import Pet from '../models/pet.js';
-import Cost from '../models/cost.js';
+import Pet from '../../infra/models/pet.js';
+import Cost from '../../infra/models/cost.js';
 
-import aws from './../services/aws.js';
+import aws from '../../services/aws.js';
 
 const router = express.Router();
 
