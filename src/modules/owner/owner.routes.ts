@@ -4,39 +4,41 @@ import bcrypt from 'bcrypt';
 
 import Owner from '../../infra/models/owner.js';
 import Pet from '../../infra/models/pet.js';
+import { ownerController } from "./index";
 
-const router = express.Router();
+const ownerRouter = express.Router();
 
-router.post('/signup', async (req: express.Request, res: express.Response) => {
-    try {
-        const { email } = req.body;
-        const userId = mongoose.Types.ObjectId;
-
-        const ownerSearch = await Owner.findOne({ email });
-
-        if (ownerSearch) {
-            res.json({ error: true, message: 'Email already registered' });
-            return false;
-        }
-
-        const password = await bcrypt.hash(req.body.password, 10);
-
-        const owner = await new Owner({
-            ...req.body,
-            _id: userId,
-            password
-        }).save();
-
-        res.json({ owner });
-
-    } catch (err) {
-        if (err instanceof Error) {
-            res.json({ error: true, message: err.message });
-        }
-    }
+ownerRouter.post('/signup', async (req: express.Request, res: express.Response) => {
+    // try {
+    //     const { email } = req.body;
+    //     const userId = mongoose.Types.ObjectId;
+    //
+    //     const ownerSearch = await Owner.findOne({ email });
+    //
+    //     if (ownerSearch) {
+    //         res.json({ error: true, message: 'Email already registered' });
+    //         return false;
+    //     }
+    //
+    //     const password = await bcrypt.hash(req.body.password, 10);
+    //
+    //     const owner = await new Owner({
+    //         ...req.body,
+    //         _id: userId,
+    //         password
+    //     }).save();
+    //
+    //     res.json({ owner });
+    //
+    // } catch (err) {
+    //     if (err instanceof Error) {
+    //         res.json({ error: true, message: err.message });
+    //     }
+    // }
+    return ownerController.signUp(req, res);
 });
 
-router.post('/signin', async (req, res) => {
+ownerRouter.post('/signin', async (req, res) => {
     try {
         const { email, password } = req.body;
     
@@ -68,7 +70,7 @@ router.post('/signin', async (req, res) => {
       }
 });
 
-router.get('/pets/:id', async (req, res) => {
+ownerRouter.get('/pets/:id', async (req, res) => {
   try {
       const pets = await Pet.find({
         ownerId: req.params.id
@@ -88,4 +90,4 @@ router.get('/pets/:id', async (req, res) => {
   }
 });
 
-export default router;
+export default ownerRouter;
