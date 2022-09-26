@@ -23,7 +23,10 @@
     "moment": "^2.29.3",
     "mongoose": "^6.3.5",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "pg": "^8.8.0",
+    "sequelize": "^6.23.1",
+    "sequelize-cli": "^6.4.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
