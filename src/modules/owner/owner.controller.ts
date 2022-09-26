@@ -2,11 +2,13 @@ import { Request, Response } from 'express';
 import { OwnerDto } from "./owner.dto";
 import { OwnerSignUpUseCase } from "./useCases/SignUp/OwnerSignUpUseCase";
 import { OwnerSignUpDto } from "./useCases/SignUp/OwnerSignUpDto";
-import {validate} from "class-validator";
+import { validate } from "class-validator";
+import { OwnerMapper } from "./owner.mapper";
 
 export class OwnerController {
     constructor(
         private ownerSignUpUserCase: OwnerSignUpUseCase,
+        private ownerMapper: OwnerMapper,
     ) {
     }
 
@@ -24,8 +26,9 @@ export class OwnerController {
             }
 
             const owner = await this.ownerSignUpUserCase.execute(ownerSignUpDto);
+            const ownerDto = this.ownerMapper.toDto(owner);
 
-            return res.status(201).json(owner);
+            return res.status(201).json(ownerDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

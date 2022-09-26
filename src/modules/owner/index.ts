@@ -10,6 +10,6 @@ const ownerRepository = new OwnerRepository(OwnerSequelizeModel, ownerMapper)
 
 const ownerSignUpCase = new OwnerSignUpUseCase(ownerRepository)
 
-const ownerController = new OwnerController(ownerSignUpCase);
+const ownerController = new OwnerController(ownerSignUpCase, ownerMapper);
 
 export { ownerController }

@@ -1,4 +1,5 @@
 import { OwnerModel } from "./owner.model";
+import {OwnerDto} from "./owner.dto";
 
 export class OwnerMapper {
     public toEntity (owner: OwnerModel): any {
@@ -19,5 +20,14 @@ export class OwnerMapper {
             raw.password,
             raw.id,
         );
+    }
+
+    toDto(owner: OwnerModel): OwnerDto {
+        return <OwnerDto> {
+            id: owner.id,
+            firstName: owner.firstName,
+            lastName: owner.lastName,
+            email: owner.email,
+        }
     }
 }
