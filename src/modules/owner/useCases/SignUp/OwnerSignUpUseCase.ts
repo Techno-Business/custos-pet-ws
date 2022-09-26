@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 export class OwnerSignUpUseCase {
     constructor(
-        private ownerRepository: IOwnerRepository
+        private ownerRepository: IOwnerRepository,
     ) {
     }
 

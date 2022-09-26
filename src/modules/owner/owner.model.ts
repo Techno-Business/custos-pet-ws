@@ -1,11 +1,11 @@
 import { v4 } from 'uuid';
 
 export class OwnerModel {
-    public id?: string;
-    public firstName: string;
-    public lastName: string;
-    public email: string;
-    public password: string;
+    private _id?: string;
+    private _firstName: string;
+    private _lastName: string;
+    private _email: string;
+    private _password: string;
 
     constructor(
         firstName: string,
@@ -15,13 +15,17 @@ export class OwnerModel {
         id?: string,
     ) {
         if (!id) {
-            this.id = v4();
+            this._id = v4();
         } else {
-            this.id = id;
+            this._id = id;
         }
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+        this._firstName = firstName;
+        this._lastName = lastName;
+        this._email = email;
+        this._password = password;
+    }
+
+    public get password() {
+        return this._password;
     }
 }

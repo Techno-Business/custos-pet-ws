@@ -4,10 +4,10 @@ import {OwnerDto} from "./owner.dto";
 export class OwnerMapper {
     public toEntity (owner: OwnerModel): any {
         return {
-            id: owner?.id?.toString(),
-            first_name: owner.firstName,
-            last_name: owner.lastName,
-            email: owner.email.valueOf(),
+            id: owner?._id?.toString(),
+            first_name: owner._firstName,
+            last_name: owner._lastName,
+            email: owner._email.valueOf(),
             password: owner.password.valueOf(),
         }
     }
@@ -24,10 +24,10 @@ export class OwnerMapper {
 
     toDto(owner: OwnerModel): OwnerDto {
         return <OwnerDto> {
-            id: owner.id,
-            firstName: owner.firstName,
-            lastName: owner.lastName,
-            email: owner.email,
+            id: owner._id,
+            firstName: owner._firstName,
+            lastName: owner._lastName,
+            email: owner._email,
         }
     }
 }

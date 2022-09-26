@@ -5,10 +5,12 @@ import { OwnerSignUpDto } from "./useCases/SignUp/OwnerSignUpDto";
 import { validate } from "class-validator";
 import { OwnerMapper } from "./owner.mapper";
 import { OwnerSignInDto } from "./useCases/SignIn/OwnerSignInDto";
+import { OwnerSignInUseCase } from "./useCases/SignIn/OwnerSignInUseCase";
 
 export class OwnerController {
     constructor(
-        private ownerSignUpUserCase: OwnerSignUpUseCase,
+        private ownerSignUpUseCase: OwnerSignUpUseCase,
+        private ownerSignInUseCase: OwnerSignInUseCase,
         private ownerMapper: OwnerMapper,
     ) {
     }
@@ -29,7 +31,7 @@ export class OwnerController {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
 
-            const owner = await this.ownerSignUpUserCase.execute(ownerSignUpDto);
+            const owner = await this.ownerSignUpUseCase.execute(ownerSignUpDto);
             const ownerDto = this.ownerMapper.toDto(owner);
 
             return res.status(201).json(ownerDto);
@@ -56,6 +58,8 @@ export class OwnerController {
             if (validationErrors.length > 0) {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
+
+            const owner = await this.ownerSignInUseCase.execute(ownerSignInDto);
 
             return res.status(201).json("hello there.")
 
