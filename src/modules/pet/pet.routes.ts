@@ -5,10 +5,54 @@ import Pet from '../../infra/models/pet.js';
 import Cost from '../../infra/models/cost.js';
 
 import aws from '../../services/aws.js';
+import { petController } from "./index";
 
-const router = express.Router();
+const petRouter = express.Router({ mergeParams: true });
 
-router.get('/:id', async (req: express.Request, res: express.Response) => {
+petRouter.post('/', async (req: express.Request, res: express.Response) => {
+    // try {
+    //     let errors = [];
+    //     const petId = mongoose.Types.ObjectId;
+    //     let photo = '';
+    //
+    //     // @ts-ignore
+    //     if (req.files) {
+    //         // @ts-ignore
+    //         const file = req.files.photo;
+    //
+    //         const nameParts = file.name.split('.');
+    //         const fileName = `${petId}.${nameParts[nameParts.length - 1]}`;
+    //         photo = `pets/${fileName}`;
+    //
+    //         const response = await aws.uploadToS3(file, photo);
+    //
+    //         if (response.error) {
+    //             errors.push({ error: true, message: response.message.message });
+    //         }
+    //     }
+    //
+    //     if (errors.length > 0) {
+    //         res.json(errors[0]);
+    //         return false;
+    //     }
+    //
+    //     const pet = await new Pet({
+    //         ...req.body,
+    //         _id: petId,
+    //         photo
+    //     }).save();
+    //
+    //     res.json({ pet });
+    //
+    // } catch (err) {
+    //     if (err instanceof Error) {
+    //         res.json({ error: true, message: err.message });
+    //     }
+    // }
+    return petController.register(req, res);
+});
+
+petRouter.get('/:id', async (req: express.Request, res: express.Response) => {
     try {
         const pet = await Pet.findById({
           _id: req.params.id
@@ -28,49 +72,7 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
     }
 });
 
-router.post('/addpet', async (req: express.Request, res: express.Response) => {
-    try {         
-        let errors = [];
-        const petId = mongoose.Types.ObjectId;
-        let photo = '';
-
-        // @ts-ignore
-        if (req.files) {
-          // @ts-ignore
-            const file = req.files.photo;
-  
-          const nameParts = file.name.split('.');
-          const fileName = `${petId}.${nameParts[nameParts.length - 1]}`;
-          photo = `pets/${fileName}`;
-
-          const response = await aws.uploadToS3(file, photo);
-  
-          if (response.error) {
-            errors.push({ error: true, message: response.message.message });
-          }
-        }
-
-        if (errors.length > 0) {
-            res.json(errors[0]);
-            return false;
-        }
-
-        const pet = await new Pet({
-            ...req.body,
-            _id: petId,
-            photo
-        }).save();
-
-        res.json({ pet });
-
-    } catch (err) {
-        if (err instanceof Error) {
-            res.json({ error: true, message: err.message });
-        }
-    }
-});
-
-router.put('/editpet/:id', async (req: express.Request, res: express.Response) => {
+petRouter.put('/editpet/:id', async (req: express.Request, res: express.Response) => {
     try {
         const petId  = req.params.id; 
         let errors = [];
@@ -111,7 +113,7 @@ router.put('/editpet/:id', async (req: express.Request, res: express.Response) =
     }
 });
 
-router.delete('/deletepet/:id', async (req: express.Request, res: express.Response) => {
+petRouter.delete('/deletepet/:id', async (req: express.Request, res: express.Response) => {
     try {
         const petId = req.params.id;
         const pet = await Pet.findByIdAndDelete(petId);
@@ -131,7 +133,7 @@ router.delete('/deletepet/:id', async (req: express.Request, res: express.Respon
     }
 });
 
-router.post('/addcost', async (req: express.Request, res: express.Response) => {
+petRouter.post('/addcost', async (req: express.Request, res: express.Response) => {
     try {   
         await new Cost({
             ...req.body
@@ -146,7 +148,7 @@ router.post('/addcost', async (req: express.Request, res: express.Response) => {
     }
 });
 
-router.get('/costs/:id', async (req: express.Request, res: express.Response) => {
+petRouter.get('/costs/:id', async (req: express.Request, res: express.Response) => {
     try {
 
       const costs = await Cost.find({
@@ -171,4 +173,4 @@ router.get('/costs/:id', async (req: express.Request, res: express.Response) => 
     }
 });
 
-export default router;
+export default petRouter;
