@@ -12,10 +12,6 @@ export class OwnerSignInUseCase {
     async execute(data: OwnerSignInDto): Promise<OwnerModel> {
         const owner: OwnerModel = await this.ownerRepository.findByEmail(data.email);
 
-        if (owner === null) {
-            throw new Error('No email address found.');
-        }
-
         const isPasswordValid = await bcrypt.compare(data.password, owner.password)
 
         if (!isPasswordValid) {
