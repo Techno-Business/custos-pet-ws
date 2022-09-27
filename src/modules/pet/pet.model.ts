@@ -11,7 +11,6 @@ export class PetModel {
     private _ownerId: string;
 
     constructor(
-        id: string,
         name: string,
         photo: string,
         age: number,
@@ -19,6 +18,7 @@ export class PetModel {
         species: string,
         breed: string,
         ownerId: string,
+        id?: string,
     ) {
         if (!id) {
             this._id = v4();

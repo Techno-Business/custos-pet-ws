@@ -1,5 +1,5 @@
 import { OwnerModel } from "./owner.model";
-import {OwnerDto} from "./owner.dto";
+import { OwnerDto } from "./owner.dto";
 
 export class OwnerMapper {
     public toEntity (owner: OwnerModel): any {

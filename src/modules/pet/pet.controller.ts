@@ -1,8 +1,16 @@
 import { Request, Response } from 'express';
 import { PetRegisterDto } from "./useCases/Register/PetRegisterDto";
-import {validate} from "class-validator";
+import { validate } from "class-validator";
+import { PetRegisterUseCase } from "./useCases/Register/PetRegisterUseCase";
+import { PetMapper } from "./pet.mapper";
 
 export class PetController {
+    constructor(
+        private petRegisterUseCase: PetRegisterUseCase,
+        private petMapper: PetMapper,
+    ) {
+    }
+
     async register(req: Request, res: Response) {
         try {
             console.log(req.body);
@@ -23,9 +31,10 @@ export class PetController {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
 
-            //const pet = await this.petRegisterUseCase.execute(petRegisterDto,)
+            const pet = await this.petRegisterUseCase.execute(petRegisterDto);
+            const petDto = this.petMapper.toDto(pet);
 
-            return res.status(201).json(petRegisterDto);
+            return res.status(201).json(petDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

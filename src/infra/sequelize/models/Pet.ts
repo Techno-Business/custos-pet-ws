@@ -44,21 +44,10 @@ const Pet = db.define('pets', {
             key: 'id',
         },
     },
-    created_at: {
-        allowNull: false,
-        type: DataTypes.DATE
-    },
-    updated_at: {
-        allowNull: false,
-        type: DataTypes.DATE
-    }
 },{
     timestamps: true,
     underscored: true,
     tableName: 'pets',
-    indexes: [
-        { unique: true, fields: ['email'] },
-    ]
 });
 
 Owner.hasMany(Pet);
