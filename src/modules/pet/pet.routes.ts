@@ -58,23 +58,24 @@ petRouter.post('/', multerFileHandler.single('photo'), async (req: express.Reque
 });
 
 petRouter.get('/:id', async (req: express.Request, res: express.Response) => {
-    try {
-        const pet = await Pet.findById({
-          _id: req.params.id
-        });
-
-        if (!pet) {
-            res.json({ error: true, message: 'Pet not found' });
-            return false;
-        }
-  
-        res.json({ pet });
-
-    } catch (err) {
-        if (err instanceof Error) {
-            res.json({ error: true, message: err.message });
-        }
-    }
+    // try {
+    //     const pet = await Pet.findById({
+    //       _id: req.params.id
+    //     });
+    //
+    //     if (!pet) {
+    //         res.json({ error: true, message: 'Pet not found' });
+    //         return false;
+    //     }
+    //
+    //     res.json({ pet });
+    //
+    // } catch (err) {
+    //     if (err instanceof Error) {
+    //         res.json({ error: true, message: err.message });
+    //     }
+    // }
+    return petController.show(req, res);
 });
 
 petRouter.put('/editpet/:id', async (req: express.Request, res: express.Response) => {
