@@ -1,6 +1,6 @@
 import { IOwnerRepository } from "../../owner.repository";
-import {OwnerSignInDto} from "./OwnerSignInDto";
-import {OwnerModel} from "../../owner.model";
+import { OwnerSignInDto } from "./OwnerSignInDto";
+import { OwnerModel } from "../../owner.model";
 import bcrypt from "bcrypt";
 
 export class OwnerSignInUseCase {

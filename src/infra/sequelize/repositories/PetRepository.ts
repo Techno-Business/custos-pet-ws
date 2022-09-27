@@ -29,4 +29,18 @@ export class PetRepository implements IPetRepository {
 
         return this.petMapper.toModel(pet);
     }
+
+    async findAllByOwnerId(ownerId: string): Promise<PetModel[]> {
+        const pets = await this.petSequelizeModel.findAll({
+            where: {
+                owner_id: ownerId,
+            },
+        });
+
+        if (pets === null) {
+            throw new Error('Nenhum pet cadastrado no momento.');
+        }
+
+        return pets.map((pet) => this.petMapper.toModel(pet));
+    }
 }

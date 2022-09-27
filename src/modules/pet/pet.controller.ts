@@ -4,11 +4,13 @@ import { validate } from "class-validator";
 import { PetRegisterUseCase } from "./useCases/Register/PetRegisterUseCase";
 import { PetShowUseCase } from "./useCases/Show/PetShowUseCase";
 import { PetMapper } from "./pet.mapper";
+import { PetListUseCase } from "./useCases/List/PetListUseCase";
 
 export class PetController {
     constructor(
         private petRegisterUseCase: PetRegisterUseCase,
         private petShowUseCase: PetShowUseCase,
+        private petListUseCase: PetListUseCase,
         private petMapper: PetMapper,
     ) {
     }
@@ -71,11 +73,13 @@ export class PetController {
         }
     }
 
-    index(req: Request, res: Response) {
+    async index(req: Request, res: Response) {
         try {
             const ownerId = req.params.ownerId;
+            const pets = await this.petListUseCase.execute(ownerId);
+            const petsDto = pets.map((p) => this.petMapper.toDto(p));
 
-            return res.status(200).json(`hello there, ${ownerId}`);
+            return res.status(200).json(petsDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

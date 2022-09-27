@@ -4,6 +4,7 @@ import { PetRepository } from "../../infra/sequelize/repositories/PetRepository"
 import PetSequelizeModel from '../../infra/sequelize/models/Pet'
 import { PetMapper } from "./pet.mapper";
 import { PetShowUseCase } from "./useCases/Show/PetShowUseCase";
+import { PetListUseCase } from "./useCases/List/PetListUseCase";
 
 const petMapper = new PetMapper();
 
@@ -13,10 +14,13 @@ const petRegisterUseCase = new PetRegisterUseCase(petRepository);
 
 const petShowUseCase = new PetShowUseCase(petRepository);
 
+const petListUseCase = new PetListUseCase(petRepository);
+
 const petController = new PetController(
     petRegisterUseCase,
     petShowUseCase,
-    petMapper
+    petListUseCase,
+    petMapper,
 );
 
 export { petController };
