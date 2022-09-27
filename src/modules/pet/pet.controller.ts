@@ -91,4 +91,21 @@ export class PetController {
             }
         }
     }
+
+    delete(req: Request, res: Response) {
+        try {
+            const petId = req.params.id;
+
+            return res.status(200).json(`hello there, ${petId}`);
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
 }

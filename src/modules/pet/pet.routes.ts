@@ -123,24 +123,25 @@ petRouter.put('/editpet/:id', async (req: express.Request, res: express.Response
     }
 });
 
-petRouter.delete('/deletepet/:id', async (req: express.Request, res: express.Response) => {
-    try {
-        const petId = req.params.id;
-        const pet = await Pet.findByIdAndDelete(petId);
-        if (!pet) {
-            res.json({ error: true, message: 'Pet not exist'});  
-        }  else {
-            await aws.deleteFileS3(pet.photo);
-            await Cost.deleteMany({
-                petId: pet._id
-            });
-            res.json({ error: false, message: 'Pet successfully deleted'}); 
-        }
-    } catch (err) {
-        if (err instanceof Error) {
-            res.json({ error: true, message: err.message });
-        }
-    }
+petRouter.delete('/:id', async (req: express.Request, res: express.Response) => {
+    // try {
+    //     const petId = req.params.id;
+    //     const pet = await Pet.findByIdAndDelete(petId);
+    //     if (!pet) {
+    //         res.json({ error: true, message: 'Pet not exist'});
+    //     }  else {
+    //         await aws.deleteFileS3(pet.photo);
+    //         await Cost.deleteMany({
+    //             petId: pet._id
+    //         });
+    //         res.json({ error: false, message: 'Pet successfully deleted'});
+    //     }
+    // } catch (err) {
+    //     if (err instanceof Error) {
+    //         res.json({ error: true, message: err.message });
+    //     }
+    // }
+    return petController.delete(req, res);
 });
 
 petRouter.post('/addcost', async (req: express.Request, res: express.Response) => {
