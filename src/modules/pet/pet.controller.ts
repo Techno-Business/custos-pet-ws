@@ -42,10 +42,10 @@ export class PetController {
                 throw new Error(response.message.message);
             }
 
-            // const pet = await this.petRegisterUseCase.execute(petRegisterDto);
-            // const petDto = this.petMapper.toDto(pet);
+            const pet = await this.petRegisterUseCase.execute(petRegisterDto, reqPhotoFile);
+            const petDto = this.petMapper.toDto(pet);
 
-            return res.status(201).json(photo);
+            return res.status(201).json(petDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

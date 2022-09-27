@@ -1,6 +1,7 @@
 import { PetRegisterDto } from "./PetRegisterDto";
 import { PetModel } from "../../pet.model";
 import { IPetRepository } from "../../pet.repository";
+import { v4 } from "uuid";
 
 export class PetRegisterUseCase {
     constructor(
@@ -8,10 +9,12 @@ export class PetRegisterUseCase {
     ) {
     }
 
-    async execute(data: PetRegisterDto): Promise<PetModel> {
+    async execute(data: PetRegisterDto, reqPhotoFile: Express.Multer.File | undefined): Promise<PetModel> {
+        const photo = this.toRandomString(String(reqPhotoFile?.originalname));
+
         const pet = new PetModel(
             data.name,
-            "photo-title-or-smt",
+            photo,
             data.age,
             data.sex,
             data.species,
@@ -19,6 +22,18 @@ export class PetRegisterUseCase {
             data.ownerId,
         );
 
-        return await this.petRepository.save(pet);
+        // return await this.petRepository.save(pet);
+        return pet;
+    }
+
+    private toRandomString(filename: string): string {
+        const filenameParts = filename.split('.');
+        const filenameExtension = filenameParts[filenameParts.length - 1];
+
+        const uuid = v4();
+
+        const randomFileString = `${uuid}.${filenameExtension}`;
+
+        return randomFileString;
     }
 }
