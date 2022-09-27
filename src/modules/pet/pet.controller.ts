@@ -2,11 +2,13 @@ import { Request, Response } from 'express';
 import { PetRegisterDto } from "./useCases/Register/PetRegisterDto";
 import { validate } from "class-validator";
 import { PetRegisterUseCase } from "./useCases/Register/PetRegisterUseCase";
+import { PetShowUseCase } from "./useCases/Show/PetShowUseCase";
 import { PetMapper } from "./pet.mapper";
 
 export class PetController {
     constructor(
         private petRegisterUseCase: PetRegisterUseCase,
+        private petShowUseCase: PetShowUseCase,
         private petMapper: PetMapper,
     ) {
     }
@@ -16,6 +18,7 @@ export class PetController {
             const { name, age, sex, species, breed } = req.body;
             const ownerId = req.params.ownerId;
 
+            //TODO: remove age number assertion/parsing
             const petRegisterDto = new PetRegisterDto(
                 name,
                 +age,
@@ -48,9 +51,14 @@ export class PetController {
         }
     }
 
-    show(req: Request, res: Response) {
+    async show(req: Request, res: Response) {
         try {
-            return res.status(200).json("hello there.");
+            const petId = req.params.id;
+
+            const pet = await this.petShowUseCase.execute(petId);
+            const petDto = this.petMapper.toDto(pet);
+
+            return res.status(200).json(petDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

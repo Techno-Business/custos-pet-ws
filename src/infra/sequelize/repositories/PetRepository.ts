@@ -17,4 +17,16 @@ export class PetRepository implements IPetRepository {
             await this.petSequelizeModel.create(petEntity)
         );
     }
+
+    async findById(petId: string): Promise<PetModel> {
+        const pk = petId;
+
+        const pet = await this.petSequelizeModel.findByPk(pk);
+
+        if (pet === null) {
+            throw new Error("Pet not found.");
+        }
+
+        return this.petMapper.toModel(pet);
+    }
 }
