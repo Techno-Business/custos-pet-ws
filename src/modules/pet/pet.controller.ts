@@ -5,15 +5,16 @@ import {validate} from "class-validator";
 export class PetController {
     async register(req: Request, res: Response) {
         try {
+            console.log(req.body);
+            const { name, age, sex, species, breed } = req.body;
             const ownerId = req.params.ownerId;
 
             const petRegisterDto = new PetRegisterDto(
-                "Fido",
-                "photo-title",
-                9,
-                "male",
-                "robot",
-                "scavenger",
+                name,
+                +age,
+                sex,
+                species,
+                breed,
                 ownerId,
             );
 
@@ -21,6 +22,8 @@ export class PetController {
             if (validationErrors.length > 0) {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
+
+            //const pet = await this.petRegisterUseCase.execute(petRegisterDto,)
 
             return res.status(201).json(petRegisterDto);
         } catch (e) {

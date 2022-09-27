@@ -2,7 +2,6 @@ import {IsNotEmpty, IsNumber, IsString} from "class-validator";
 
 export interface PetRegisterDto {
     name: string;
-    photo: string;
     age: number;
     sex: string;
     species: string;
@@ -14,8 +13,6 @@ export class PetRegisterDto {
     @IsNotEmpty()
     @IsString()
     name: string;
-    @IsNotEmpty()
-    photo: string;
     @IsNotEmpty()
     @IsNumber()
     age: number;
@@ -34,7 +31,6 @@ export class PetRegisterDto {
 
     constructor(
         name: string,
-        photo: string,
         age: number,
         sex: string,
         species: string,
@@ -42,7 +38,6 @@ export class PetRegisterDto {
         ownerId: string,
     ) {
         this.name = name;
-        this.photo = photo;
         this.age = age;
         this.sex = sex;
         this.species = species;
