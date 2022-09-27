@@ -78,6 +78,10 @@ petRouter.get('/:id', async (req: express.Request, res: express.Response) => {
     return petController.show(req, res);
 });
 
+petRouter.get('/', async (req: express.Request, res: express.Response) => {
+    return petController.index(req, res);
+});
+
 petRouter.put('/editpet/:id', async (req: express.Request, res: express.Response) => {
     try {
         const petId  = req.params.id; 
