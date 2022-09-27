@@ -4,8 +4,6 @@ import AWS from 'aws-sdk';
 export default {
 
   uploadToS3: function (file, filename, acl = 'public-read') {
-    console.log("aws");
-    console.log(file);
 
     return new Promise((resolve, reject) => {
       let IAM_USER_KEY = process.env.IAM_USER_KEY;

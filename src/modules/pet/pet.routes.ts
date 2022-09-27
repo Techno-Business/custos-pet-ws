@@ -54,7 +54,7 @@ petRouter.post('/', multerFileHandler.single('photo'), async (req: express.Reque
     //         res.json({ error: true, message: err.message });
     //     }
     // }
-    return petController.register(req, res);
+    return petController.create(req, res);
 });
 
 petRouter.get('/:id', async (req: express.Request, res: express.Response) => {

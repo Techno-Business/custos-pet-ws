@@ -71,24 +71,24 @@ ownerRouter.post('/signin', async (req, res) => {
     return ownerController.signIn(req, res);
 });
 
-ownerRouter.get('/pets/:id', async (req, res) => {
-  try {
-      const pets = await Pet.find({
-        ownerId: req.params.id
-      });
-
-      if (pets.length == 0) {
-        res.json({ error: true, message: 'Nenhum pet cadastrado no momento' });
-        return false;
-      }
-
-      res.json({ pets });
-
-  } catch (err) {
-      if (err instanceof Error) {
-          res.json({ error: true, message: err.message });
-      }
-  }
-});
+// ownerRouter.get('/pets/:id', async (req, res) => {
+//   try {
+//       const pets = await Pet.find({
+//         ownerId: req.params.id
+//       });
+//
+//       if (pets.length == 0) {
+//         res.json({ error: true, message: 'Nenhum pet cadastrado no momento' });
+//         return false;
+//       }
+//
+//       res.json({ pets });
+//
+//   } catch (err) {
+//       if (err instanceof Error) {
+//           res.json({ error: true, message: err.message });
+//       }
+//   }
+// });
 
 export default ownerRouter;

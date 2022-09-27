@@ -15,7 +15,7 @@ export class PetController {
     ) {
     }
 
-    async register(req: Request, res: Response) {
+    async create(req: Request, res: Response) {
         try {
             const { name, age, sex, species, breed } = req.body;
             const ownerId = req.params.ownerId;
