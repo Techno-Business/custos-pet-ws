@@ -3,7 +3,6 @@ import { PetRegisterDto } from "./useCases/Register/PetRegisterDto";
 import { validate } from "class-validator";
 import { PetRegisterUseCase } from "./useCases/Register/PetRegisterUseCase";
 import { PetMapper } from "./pet.mapper";
-import aws from "../../services/aws";
 
 export class PetController {
     constructor(
@@ -14,7 +13,6 @@ export class PetController {
 
     async register(req: Request, res: Response) {
         try {
-            console.log(req.body);
             const { name, age, sex, species, breed } = req.body;
             const ownerId = req.params.ownerId;
 
@@ -33,14 +31,6 @@ export class PetController {
             }
 
             const reqPhotoFile = req.file;
-            console.log(reqPhotoFile);
-            const photo = req.file?.originalname;
-            console.log(photo);
-
-            const response = await aws.uploadToS3(reqPhotoFile?.buffer, photo);
-            if (response.error) {
-                throw new Error(response.message.message);
-            }
 
             const pet = await this.petRegisterUseCase.execute(petRegisterDto, reqPhotoFile);
             const petDto = this.petMapper.toDto(pet);
