@@ -3,6 +3,7 @@ import { PetRegisterDto } from "./useCases/Register/PetRegisterDto";
 import { validate } from "class-validator";
 import { PetRegisterUseCase } from "./useCases/Register/PetRegisterUseCase";
 import { PetMapper } from "./pet.mapper";
+import aws from "../../services/aws";
 
 export class PetController {
     constructor(
@@ -31,10 +32,20 @@ export class PetController {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
 
-            const pet = await this.petRegisterUseCase.execute(petRegisterDto);
-            const petDto = this.petMapper.toDto(pet);
+            const reqPhotoFile = req.file;
+            console.log(reqPhotoFile);
+            const photo = req.file?.originalname;
+            console.log(photo);
 
-            return res.status(201).json(petDto);
+            const response = await aws.uploadToS3(reqPhotoFile?.buffer, photo);
+            if (response.error) {
+                throw new Error(response.message.message);
+            }
+
+            // const pet = await this.petRegisterUseCase.execute(petRegisterDto);
+            // const petDto = this.petMapper.toDto(pet);
+
+            return res.status(201).json(photo);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

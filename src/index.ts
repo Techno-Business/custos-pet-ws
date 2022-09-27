@@ -14,7 +14,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(busboy());
-app.use(busboyBodyParser());
+//app.use(busboyBodyParser());
 app.use(express.json());
 app.use(cors());
 

@@ -7,9 +7,14 @@ import Cost from '../../infra/models/cost.js';
 import aws from '../../services/aws.js';
 import { petController } from "./index";
 
+import multerConfig from '../../middlewares/multer/multer'
+import multer from "multer";
+
 const petRouter = express.Router({ mergeParams: true });
 
-petRouter.post('/', async (req: express.Request, res: express.Response) => {
+const multerFileHandler = multer(multerConfig);
+
+petRouter.post('/', multerFileHandler.single('photo'), async (req: express.Request, res: express.Response) => {
     // try {
     //     let errors = [];
     //     const petId = mongoose.Types.ObjectId;
