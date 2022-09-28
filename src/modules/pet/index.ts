@@ -6,6 +6,7 @@ import { PetMapper } from "./pet.mapper";
 import { PetShowUseCase } from "./useCases/Show/PetShowUseCase";
 import { PetListUseCase } from "./useCases/List/PetListUseCase";
 import { PetRemoveUseCase } from "./useCases/Remove/PetRemoveUseCase";
+import { PetEditUseCase } from "./useCases/Edit/PetEditUseCase";
 
 const petMapper = new PetMapper();
 
@@ -19,11 +20,14 @@ const petListUseCase = new PetListUseCase(petRepository);
 
 const petRemoveUseCase = new PetRemoveUseCase(petRepository);
 
+const petEditUseCase = new PetEditUseCase(petRepository);
+
 const petController = new PetController(
     petRegisterUseCase,
     petShowUseCase,
     petListUseCase,
     petRemoveUseCase,
+    petEditUseCase,
     petMapper,
 );
 

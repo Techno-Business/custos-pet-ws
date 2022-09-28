@@ -72,4 +72,22 @@ export class PetRepository implements IPetRepository {
 
         return photo;
     }
+
+    async update(pet: PetModel): Promise<PetModel> {
+        const rawPet = this.petMapper.toEntity(pet);
+        console.log(rawPet);
+
+        //TODO: change to raw query
+        const updatedPet = await this.petSequelizeModel.update({ ...rawPet }, {
+            where: {
+                id: rawPet.id,
+            },
+            returning: true,
+            // @ts-ignore
+            raw: true,
+        });
+        console.log(updatedPet);
+
+        return this.petMapper.toModel(updatedPet);
+    }
 }

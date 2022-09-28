@@ -82,45 +82,46 @@ petRouter.get('/', async (req: express.Request, res: express.Response) => {
     return petController.index(req, res);
 });
 
-petRouter.put('/editpet/:id', async (req: express.Request, res: express.Response) => {
-    try {
-        const petId  = req.params.id; 
-        let errors = [];
-        let photo = '';
-
-        // @ts-ignore
-        if (req.files) {
-          // @ts-ignore
-            const file = req.files.photo;
-  
-          const nameParts = file.name.split('.');
-          const fileName = `${petId}.${nameParts[nameParts.length - 1]}`;
-          photo = `pets/${fileName}`;
-
-          const response = await aws.uploadToS3(file, photo);
-  
-          if (response.error) {
-            errors.push({ error: true, message: response.message.message });
-          }
-        }
-
-        if (errors.length > 0) {
-            res.json(errors[0]);
-            return false;
-        }
-
-        const pet = await Pet.findByIdAndUpdate(petId, {
-            ...req.body,
-            photo
-        }, { new: true });
-
-        res.json({ pet });
-
-    } catch (err) {
-        if (err instanceof Error) {
-            res.json({ error: true, message: err.message });
-        }
-    }
+petRouter.put('/:id', multerFileHandler.single('photo'), async (req: express.Request, res: express.Response) => {
+    // try {
+    //     const petId  = req.params.id;
+    //     let errors = [];
+    //     let photo = '';
+    //
+    //     // @ts-ignore
+    //     if (req.files) {
+    //       // @ts-ignore
+    //         const file = req.files.photo;
+    //
+    //       const nameParts = file.name.split('.');
+    //       const fileName = `${petId}.${nameParts[nameParts.length - 1]}`;
+    //       photo = `pets/${fileName}`;
+    //
+    //       const response = await aws.uploadToS3(file, photo);
+    //
+    //       if (response.error) {
+    //         errors.push({ error: true, message: response.message.message });
+    //       }
+    //     }
+    //
+    //     if (errors.length > 0) {
+    //         res.json(errors[0]);
+    //         return false;
+    //     }
+    //
+    //     const pet = await Pet.findByIdAndUpdate(petId, {
+    //         ...req.body,
+    //         photo
+    //     }, { new: true });
+    //
+    //     res.json({ pet });
+    //
+    // } catch (err) {
+    //     if (err instanceof Error) {
+    //         res.json({ error: true, message: err.message });
+    //     }
+    // }
+    return petController.update(req, res);
 });
 
 petRouter.delete('/:id', async (req: express.Request, res: express.Response) => {
