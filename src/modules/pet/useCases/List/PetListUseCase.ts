@@ -8,7 +8,11 @@ export class PetListUseCase {
     }
 
     async execute(ownerId: string): Promise<PetModel[]> {
-        const pets: PetModel[] = await this.petRepository.findAllByOwnerId(ownerId);
+        const pets: PetModel[] | null = await this.petRepository.findAllByOwnerId(ownerId);
+
+        if (!pets) {
+            throw new Error('Nenhum pet cadastrado no momento.');
+        }
 
         return pets;
     }

@@ -2,6 +2,7 @@ import { IPetRepository } from '../../../modules/pet/pet.repository';
 import Pet from '../models/Pet';
 import { PetModel } from "../../../modules/pet/pet.model";
 import { PetMapper } from "../../../modules/pet/pet.mapper";
+import { Model } from "sequelize";
 
 export class PetRepository implements IPetRepository {
     constructor(
@@ -29,18 +30,17 @@ export class PetRepository implements IPetRepository {
         return hasPet;
     }
 
-    async findAllByOwnerId(ownerId: string): Promise<PetModel[]> {
+    async findAllByOwnerId(ownerId: string): Promise<PetModel[] | null> {
         const pets = await this.petSequelizeModel.findAll({
             where: {
                 owner_id: ownerId,
             },
         });
 
-        if (pets === null) {
-            throw new Error('Nenhum pet cadastrado no momento.');
-        }
+        let hasPets: PetModel[] | null;
+        pets ? hasPets = pets.map((pet: Model<PetModel>) => this.petMapper.toModel(pet)) : hasPets = null;
 
-        return pets.map((pet) => this.petMapper.toModel(pet));
+        return hasPets;
     }
 
     async deleteById(petId: string): Promise<void> {
