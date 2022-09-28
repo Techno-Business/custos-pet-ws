@@ -43,4 +43,22 @@ export class PetRepository implements IPetRepository {
 
         return pets.map((pet) => this.petMapper.toModel(pet));
     }
+
+    async deleteById(petId: string): Promise<void> {
+        await this.petSequelizeModel.destroy({
+            where: {
+                id: petId,
+            }
+        });
+    }
+
+    async existsById(petId: string): Promise<boolean> {
+        const pet = await this.petSequelizeModel.findOne({
+            where: {
+                id: petId,
+            },
+        });
+
+        return !!pet;
+    }
 }

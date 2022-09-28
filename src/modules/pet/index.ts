@@ -5,6 +5,7 @@ import PetSequelizeModel from '../../infra/sequelize/models/Pet'
 import { PetMapper } from "./pet.mapper";
 import { PetShowUseCase } from "./useCases/Show/PetShowUseCase";
 import { PetListUseCase } from "./useCases/List/PetListUseCase";
+import { PetRemoveUseCase } from "./useCases/Remove/PetRemoveUseCase";
 
 const petMapper = new PetMapper();
 
@@ -16,10 +17,13 @@ const petShowUseCase = new PetShowUseCase(petRepository);
 
 const petListUseCase = new PetListUseCase(petRepository);
 
+const petRemoveUseCase = new PetRemoveUseCase(petRepository);
+
 const petController = new PetController(
     petRegisterUseCase,
     petShowUseCase,
     petListUseCase,
+    petRemoveUseCase,
     petMapper,
 );
 

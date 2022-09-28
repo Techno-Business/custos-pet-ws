@@ -5,12 +5,14 @@ import { PetRegisterUseCase } from "./useCases/Register/PetRegisterUseCase";
 import { PetShowUseCase } from "./useCases/Show/PetShowUseCase";
 import { PetMapper } from "./pet.mapper";
 import { PetListUseCase } from "./useCases/List/PetListUseCase";
+import { PetRemoveUseCase } from "./useCases/Remove/PetRemoveUseCase";
 
 export class PetController {
     constructor(
         private petRegisterUseCase: PetRegisterUseCase,
         private petShowUseCase: PetShowUseCase,
         private petListUseCase: PetListUseCase,
+        private petRemoveUseCase: PetRemoveUseCase,
         private petMapper: PetMapper,
     ) {
     }
@@ -92,11 +94,13 @@ export class PetController {
         }
     }
 
-    delete(req: Request, res: Response) {
+    async delete(req: Request, res: Response) {
         try {
             const petId = req.params.id;
 
-            return res.status(200).json(`hello there, ${petId}`);
+            await this.petRemoveUseCase.execute(petId);
+
+            return res.status(200).json('Pet successfully deleted');
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
