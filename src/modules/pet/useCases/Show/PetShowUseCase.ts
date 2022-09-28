@@ -8,7 +8,11 @@ export class PetShowUseCase {
     }
 
     async execute(petId: string): Promise<PetModel> {
-        const pet: PetModel = await this.petRepository.findById(petId);
+        const pet: PetModel | null = await this.petRepository.findById(petId);
+
+        if (!pet) {
+            throw new Error("Pet not found.");
+        }
 
         return pet;
     }

@@ -18,16 +18,15 @@ export class PetRepository implements IPetRepository {
         );
     }
 
-    async findById(petId: string): Promise<PetModel> {
+    async findById(petId: string): Promise<PetModel | null> {
         const pk = petId;
 
         const pet = await this.petSequelizeModel.findByPk(pk);
 
-        if (pet === null) {
-            throw new Error("Pet not found.");
-        }
+        let hasPet: PetModel | null;
+        pet ? hasPet = this.petMapper.toModel(pet) : hasPet = null;
 
-        return this.petMapper.toModel(pet);
+        return hasPet;
     }
 
     async findAllByOwnerId(ownerId: string): Promise<PetModel[]> {
