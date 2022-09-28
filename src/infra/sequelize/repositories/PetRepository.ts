@@ -61,4 +61,16 @@ export class PetRepository implements IPetRepository {
 
         return !!pet;
     }
+
+    async findPhotoById(petId: string): Promise<string | null> {
+        const photo = <string | null> await this.petSequelizeModel.findOne({
+            attributes: ['photo'],
+            raw: true,
+            where: {
+                id: petId,
+            }
+        });
+
+        return photo;
+    }
 }

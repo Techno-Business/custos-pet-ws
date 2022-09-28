@@ -6,4 +6,5 @@ export interface IPetRepository {
     findAllByOwnerId(ownerId: string): Promise<PetModel[]>;
     deleteById(petId: string): Promise<void>;
     existsById(petId: string): Promise<boolean>;
+    findPhotoById(petId: string): Promise<string | null>;
 }
