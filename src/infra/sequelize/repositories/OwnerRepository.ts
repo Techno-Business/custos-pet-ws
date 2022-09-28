@@ -28,18 +28,17 @@ export class OwnerRepository implements IOwnerRepository {
         );
     }
 
-    async findByEmail(email: string): Promise<OwnerModel> {
+    async findByEmail(email: string): Promise<OwnerModel | null> {
         const owner = await this.ownerSequelizeModel.findOne({
             where: {
                 email: email,
             },
         });
 
-        if (owner === null) {
-            throw new Error('No email address found.');
-        }
+        let hasOwner: OwnerModel | null;
+        owner ? hasOwner = this.ownerMapper.toModel(owner) : hasOwner = null;
 
-        return this.ownerMapper.toModel(owner);
+        return hasOwner;
     }
 
 }

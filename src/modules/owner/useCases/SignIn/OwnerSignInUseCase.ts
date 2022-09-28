@@ -10,12 +10,17 @@ export class OwnerSignInUseCase {
     }
 
     async execute(data: OwnerSignInDto): Promise<OwnerModel> {
-        const owner: OwnerModel = await this.ownerRepository.findByEmail(data.email);
+        const owner: OwnerModel | null = await this.ownerRepository.findByEmail(data.email);
+        const signInErrorMessage: string = "Incorrect email address or password."
+
+        if (!owner) {
+            throw new Error(signInErrorMessage);
+        }
 
         const isPasswordValid = await bcrypt.compare(data.password, owner.password)
 
         if (!isPasswordValid) {
-            throw new Error('Incorrect email address or password.');
+            throw new Error(signInErrorMessage);
         }
 
         return owner;
