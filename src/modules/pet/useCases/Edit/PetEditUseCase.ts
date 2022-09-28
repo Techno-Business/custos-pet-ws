@@ -1,6 +1,6 @@
 import { IPetRepository } from "../../pet.repository";
-import {PetRegisterDto} from "../Register/PetRegisterDto";
-import {PetModel} from "../../pet.model";
+import { PetRegisterDto } from "../Register/PetRegisterDto";
+import { PetModel } from "../../pet.model";
 import aws from "../../../../services/aws";
 
 export class PetEditUseCase {
@@ -19,8 +19,6 @@ export class PetEditUseCase {
         if (!pet) {
             throw new Error("Pet not found.");
         }
-
-        console.log(petRegisterDto.age);
 
         pet.name = petRegisterDto.name;
         pet.age = petRegisterDto.age;

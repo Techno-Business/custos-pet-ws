@@ -2,7 +2,7 @@ import { IPetRepository } from '../../../modules/pet/pet.repository';
 import Pet from '../models/Pet';
 import { PetModel } from "../../../modules/pet/pet.model";
 import { PetMapper } from "../../../modules/pet/pet.mapper";
-import { Model } from "sequelize";
+import { Model, QueryTypes } from "sequelize";
 
 export class PetRepository implements IPetRepository {
     constructor(
@@ -75,18 +75,29 @@ export class PetRepository implements IPetRepository {
 
     async update(pet: PetModel): Promise<PetModel> {
         const rawPet = this.petMapper.toEntity(pet);
-        console.log(rawPet);
 
-        //TODO: change to raw query
-        const updatedPet = await this.petSequelizeModel.update({ ...rawPet }, {
-            where: {
-                id: rawPet.id,
-            },
-            returning: true,
-            // @ts-ignore
-            raw: true,
-        });
-        console.log(updatedPet);
+        let updatedPet: any = await this.petSequelizeModel.sequelize?.query(
+            `UPDATE pets
+            SET name=:name, photo=:photo, age=:age, sex=:sex, species=:species, breed=:breed 
+            WHERE id=:id
+            RETURNING pets.id, pets.name, pets.photo, pets.age, pets.sex, pets.species, pets.breed, pets.owner_id`,
+            {
+                model: Pet,
+                replacements: {
+                    id: [ rawPet.id ],
+                    name: [ rawPet.name ],
+                    photo: [ rawPet.photo ],
+                    age: [ rawPet.age ],
+                    sex: [ rawPet.sex ],
+                    species: [ rawPet.species ],
+                    breed: [ rawPet.breed ],
+                },
+                type: QueryTypes.UPDATE,
+                logging: console.log,
+            }
+        );
+
+        updatedPet = updatedPet[0][0];
 
         return this.petMapper.toModel(updatedPet);
     }

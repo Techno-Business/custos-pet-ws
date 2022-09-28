@@ -117,8 +117,7 @@ export class PetController {
 
     async update(req: Request, res: Response) {
         try {
-            console.log(req.body);
-            const {name, age, sex, species, breed} = req.body;
+            const { name, age, sex, species, breed } = req.body;
             const ownerId = req.params.ownerId;
             const petId = req.params.id;
 
@@ -138,7 +137,6 @@ export class PetController {
             }
 
             const reqPhotoFile = req.file;
-            console.log(reqPhotoFile);
 
             const pet = await this.petEditUseCase.execute(petId, petRegisterDto, reqPhotoFile);
             const petDto = this.petMapper.toDto(pet);
