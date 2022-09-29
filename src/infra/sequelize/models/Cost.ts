@@ -1,0 +1,41 @@
+import { db } from "../../db";
+import { DataTypes } from "sequelize";
+import Details from "./Details";
+
+const Cost = db.define('costs', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+    },
+    type: {
+        type: DataTypes.CHAR(21),
+        allowNull: false,
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+    },
+    price: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    details_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: 'details',
+            key: 'id',
+        }
+    },
+},{
+    timestamps: true,
+    underscored: true,
+    tableName: 'costs',
+});
+
+Cost.hasOne(Details);
+Details.belongsTo(Cost);
+
+export default Cost;

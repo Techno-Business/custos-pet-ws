@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
       },
       service_type: {
-        type: Sequelize.CHAR(21),
+        type: Sequelize.STRING,
         allowNull: true,
       },
       brand: {
