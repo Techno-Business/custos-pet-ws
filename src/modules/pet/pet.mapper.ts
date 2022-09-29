@@ -23,7 +23,7 @@ export class PetMapper {
             raw.sex,
             raw.species,
             raw.breed,
-            raw.owner_id,
+            raw.ownerId,
             raw.id,
         );
     }
