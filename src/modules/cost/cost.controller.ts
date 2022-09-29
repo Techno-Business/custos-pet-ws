@@ -1,13 +1,37 @@
 import { Request, Response } from 'express';
+import { validate } from "class-validator";
+import { BaseCostRegisterDto } from "./useCases/Register/CostRegisterDto";
 
 export class CostController {
     constructor() {
     }
 
-    create(req: Request, res: Response) {
+    async create(req: Request, res: Response) {
         try {
+            const {
+                petId,
+                type,
+                date,
+                price,
+                goal, //TODO: change 'goal' to 'description'
+                brand,
+                weight,
+                service_type,
+            } = req.body;
 
-            return res.status(200).json("hello there.");
+            const baseCostRegisterDto = new BaseCostRegisterDto(
+                petId,
+                type,
+                date,
+                price,
+            );
+
+            const validationErrors = await validate(baseCostRegisterDto);
+            if (validationErrors.length > 0) {
+                return res.status(400).json(validationErrors.map(v => v.constraints));
+            }
+
+            return res.status(200).json(baseCostRegisterDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
