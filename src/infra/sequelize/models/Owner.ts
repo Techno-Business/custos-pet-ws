@@ -30,6 +30,8 @@ const Owner = db.define('owners', {
     },
 },{
     timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
     underscored: true,
     tableName: 'owners',
     indexes: [

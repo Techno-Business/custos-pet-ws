@@ -31,6 +31,8 @@ const Cost = db.define('costs', {
     },
 },{
     timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
     underscored: true,
     tableName: 'costs',
 });
