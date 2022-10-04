@@ -7,9 +7,12 @@ import {
     ServiceCostRegisterDto,
     VaccineCostRegisterDto
 } from "./useCases/Register/CostRegisterDto";
+import { CostRegisterUseCase } from "./useCases/Register/CostRegisterUseCase";
 
 export class CostController {
-    constructor() {
+    constructor(
+        private costRegisterUseCase: CostRegisterUseCase,
+    ) {
     }
 
     async create(req: Request, res: Response) {
@@ -42,16 +45,18 @@ export class CostController {
                 detailedCostRegisterDto = new ServiceCostRegisterDto(baseCostRegisterDto, service_type, goal);
             } else if (type == CostType.Vaccine) {
                 detailedCostRegisterDto = new VaccineCostRegisterDto(baseCostRegisterDto, goal);
-            } else if (type == CostType.Feed) {
+            } else {
                 detailedCostRegisterDto = new FeedCostRegisterDto(baseCostRegisterDto, brand, weight, goal);
             }
 
-            const costDetailsValidationErrors = await validate(detailedCostRegisterDto!);
+            const costDetailsValidationErrors = await validate(detailedCostRegisterDto);
             if (costDetailsValidationErrors.length > 0) {
                 return res.status(400).json(costDetailsValidationErrors.map(v => v.constraints));
             }
 
-            return res.status(200).json(detailedCostRegisterDto!);
+            const cost = await this.costRegisterUseCase.execute(detailedCostRegisterDto);
+
+            return res.status(200).json(cost);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

@@ -9,10 +9,10 @@ export enum CostType {
 export class BaseCostRegisterDto {
     @IsNotEmpty()
     //@IsUUID(4, { each: true })
-    petId: string;
+    petId: string[];
     @IsNotEmpty()
     @IsEnum(CostType)
-    type: string;
+    type: CostType;
     @IsNotEmpty()
     @IsString()
     date: string;
@@ -21,8 +21,8 @@ export class BaseCostRegisterDto {
     price: number;
 
     constructor(
-        petId: string,
-        type: string,
+        petId: string[],
+        type: CostType,
         date: string,
         price: number
     ) {
@@ -73,7 +73,7 @@ export class FeedCostRegisterDto {
     brand: string;
     @IsNotEmpty()
     @IsNumber()
-    weight: string;
+    weight: number;
     @IsNotEmpty()
     @IsString()
     description: string;
@@ -81,7 +81,7 @@ export class FeedCostRegisterDto {
     constructor(
         baseCost: BaseCostRegisterDto,
         brand: string,
-        weight: string,
+        weight: number,
         description: string
     ) {
         this.baseCost = baseCost;
