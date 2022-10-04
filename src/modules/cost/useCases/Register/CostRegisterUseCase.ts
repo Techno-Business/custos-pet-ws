@@ -1,8 +1,11 @@
 import { FeedCostRegisterDto, ServiceCostRegisterDto, VaccineCostRegisterDto } from "./CostRegisterDto";
 import { CostModel } from "../../cost.model";
+import { IPetRepository } from "../../../pet/pet.repository";
 
 export class CostRegisterUseCase {
-    constructor() {
+    constructor(
+        private petRepository: IPetRepository,
+    ) {
     }
 
     async execute(data: ServiceCostRegisterDto | VaccineCostRegisterDto | FeedCostRegisterDto): Promise<CostModel> {
@@ -34,6 +37,10 @@ export class CostRegisterUseCase {
                 data.brand,
                 data.weight,
             )
+        }
+
+        for (const petId of cost.petId) {
+            await this.petRepository.createCostById(petId, cost);
         }
 
         return cost;

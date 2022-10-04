@@ -1,13 +1,19 @@
 import { IPetRepository } from '../../../modules/pet/pet.repository';
 import Pet from '../models/Pet';
+import Cost from '../models/Cost';
+import Details from '../models/Details';
 import { PetModel } from "../../../modules/pet/pet.model";
 import { PetMapper } from "../../../modules/pet/pet.mapper";
 import { Model } from "sequelize";
+import { CostModel } from "../../../modules/cost/cost.model";
+import { CostMapper } from "../../../modules/cost/cost.mapper";
 
 export class PetRepository implements IPetRepository {
     constructor(
         private petSequelizeModel: typeof Pet,
+        private costSequelizeModel: typeof Cost,
         private petMapper: PetMapper,
+        private costMapper: CostMapper,
     ) {
     }
 
@@ -95,5 +101,30 @@ export class PetRepository implements IPetRepository {
         updatedPet = updatedPet[1][0];
 
         return this.petMapper.toModel(updatedPet);
+    }
+
+    async createCostById(petId: string, cost: CostModel): Promise<void> {
+        const pet = await this.petSequelizeModel.findByPk(petId);
+
+        const rawCost = this.costMapper.toEntity(cost);
+
+        // await pet.addCost({
+        //     id: rawCost.id,
+        //     type: rawCost.type,
+        //     date: rawCost.date,
+        //     price: rawCost.price,
+        //     details: [{
+        //         id: rawCost.id,
+        //         service_type: rawCost.service_type,
+        //         brand: rawCost.brand,
+        //         weight: rawCost.weight,
+        //         description: rawCost.description,
+        //     }]
+        // }, {
+        //     through: 'pets_costs',
+        //     include: [ Details ],
+        // })
+
+        return Promise.resolve(undefined);
     }
 }
