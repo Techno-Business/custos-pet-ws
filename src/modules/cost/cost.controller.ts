@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { validate } from "class-validator";
-import { BaseCostRegisterDto } from "./useCases/Register/CostRegisterDto";
+import {
+    BaseCostRegisterDto,
+    CostType,
+    FeedCostRegisterDto,
+    ServiceCostRegisterDto,
+    VaccineCostRegisterDto
+} from "./useCases/Register/CostRegisterDto";
 
 export class CostController {
     constructor() {
@@ -31,7 +37,21 @@ export class CostController {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
 
-            return res.status(200).json(baseCostRegisterDto);
+            let detailedCostRegisterDto: ServiceCostRegisterDto | VaccineCostRegisterDto | FeedCostRegisterDto;
+            if (type == CostType.Service) {
+                detailedCostRegisterDto = new ServiceCostRegisterDto(baseCostRegisterDto, service_type, goal);
+            } else if (type == CostType.Vaccine) {
+                detailedCostRegisterDto = new VaccineCostRegisterDto(baseCostRegisterDto, goal);
+            } else if (type == CostType.Feed) {
+                detailedCostRegisterDto = new FeedCostRegisterDto(baseCostRegisterDto, brand, weight, goal);
+            }
+
+            const costDetailsValidationErrors = await validate(detailedCostRegisterDto!);
+            if (costDetailsValidationErrors.length > 0) {
+                return res.status(400).json(costDetailsValidationErrors.map(v => v.constraints));
+            }
+
+            return res.status(200).json(detailedCostRegisterDto!);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
