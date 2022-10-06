@@ -14,4 +14,18 @@ export class CostMapper {
             pet_id: cost.petId,
         }
     }
+
+    public toModel (raw: any): CostModel {
+        return new CostModel(
+            raw.pet_id,
+            raw.type,
+            raw.date,
+            raw.price,
+            raw.description,
+            raw?.brand,
+            raw?.weight,
+            raw?.service_type,
+            raw.id,
+        )
+    }
 }

@@ -38,7 +38,6 @@ export class CostModel {
         this._serviceType = serviceType;
     }
 
-
     get id(): string {
         return this._id as string;
     }

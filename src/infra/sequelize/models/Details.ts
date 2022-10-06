@@ -29,7 +29,7 @@ const Details = db.define('details', {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     underscored: true,
-    tableName: 'pets',
+    tableName: 'details',
 });
 
 export default Details;

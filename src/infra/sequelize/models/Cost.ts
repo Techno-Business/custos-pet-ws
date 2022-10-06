@@ -37,7 +37,12 @@ const Cost = db.define('costs', {
     tableName: 'costs',
 });
 
-Cost.hasOne(Details);
-Details.belongsTo(Cost);
+Details.hasOne(Cost, {
+    foreignKey: 'details_id',
+});
+Cost.belongsTo(Details, {
+    foreignKey: 'details_id',
+    as: 'details',
+});
 
 export default Cost;

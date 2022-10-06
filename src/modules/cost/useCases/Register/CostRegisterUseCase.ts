@@ -1,10 +1,12 @@
 import { FeedCostRegisterDto, ServiceCostRegisterDto, VaccineCostRegisterDto } from "./CostRegisterDto";
 import { CostModel } from "../../cost.model";
 import { IPetRepository } from "../../../pet/pet.repository";
+import { ICostRepository } from "../../cost.repository";
 
 export class CostRegisterUseCase {
     constructor(
         private petRepository: IPetRepository,
+        private costRepository: ICostRepository,
     ) {
     }
 
@@ -39,9 +41,11 @@ export class CostRegisterUseCase {
             )
         }
 
-        for (const petId of cost.petId) {
-            await this.petRepository.createCostById(petId, cost);
-        }
+        //1. criar details
+        //2. criar costs associando details
+        //3. criar associações de costs e pets
+
+        await this.costRepository.save(cost, String(data.baseCost.petId.pop()));
 
         return cost;
     }

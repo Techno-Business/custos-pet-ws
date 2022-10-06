@@ -8,7 +8,7 @@ const PetCost = db.define('pets_costs', {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'pets',
+            model: Pet,
             key: 'id',
         },
         primaryKey: true,
@@ -17,7 +17,7 @@ const PetCost = db.define('pets_costs', {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'costs',
+            model: Cost,
             key: 'id',
         },
         primaryKey: true,
@@ -37,10 +37,14 @@ const PetCost = db.define('pets_costs', {
 });
 
 Pet.belongsToMany(Cost, {
-    through: PetCost
+    through: {
+        model: PetCost
+    }
 });
 Cost.belongsToMany(Pet, {
-    through: PetCost
+    through: {
+        model: PetCost
+    }
 })
 
 export default PetCost;

@@ -10,7 +10,10 @@ import { PetEditUseCase } from "./useCases/Edit/PetEditUseCase";
 
 const petMapper = new PetMapper();
 
-const petRepository = new PetRepository(PetSequelizeModel, petMapper);
+const petRepository = new PetRepository(
+    PetSequelizeModel,
+    petMapper,
+);
 
 const petRegisterUseCase = new PetRegisterUseCase(petRepository);
 
