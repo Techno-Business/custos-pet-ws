@@ -2,11 +2,13 @@ import { FeedCostRegisterDto, ServiceCostRegisterDto, VaccineCostRegisterDto } f
 import { CostModel } from "../../cost.model";
 import { IPetRepository } from "../../../pet/pet.repository";
 import { ICostRepository } from "../../cost.repository";
+import { IPetCostRepository } from "../../pet.cost.repository";
 
 export class CostRegisterUseCase {
     constructor(
         private petRepository: IPetRepository,
         private costRepository: ICostRepository,
+        private petCostRepository: IPetCostRepository,
     ) {
     }
 
@@ -45,7 +47,13 @@ export class CostRegisterUseCase {
         //2. criar costs associando details
         //3. criar associações de costs e pets
 
+        //TODO: refactor cost save and put it inside the transaction
         const savedCost = await this.costRepository.save(cost);
+        try {
+            await this.petCostRepository.save(cost.id, cost.petId);
+        } catch (e) {
+            //...
+        }
 
         return savedCost;
     }

@@ -37,14 +37,25 @@ const PetCost = db.define('pets_costs', {
 });
 
 Pet.belongsToMany(Cost, {
+    foreignKey: 'pet_id',
     through: {
         model: PetCost
     }
 });
 Cost.belongsToMany(Pet, {
+    foreignKey: 'cost_id',
     through: {
         model: PetCost
     }
+});
+
+PetCost.belongsTo(Pet, {
+    foreignKey: 'pet_id',
+    as: 'pets',
+});
+PetCost.belongsTo(Cost, {
+    foreignKey: 'cost_id',
+    as: 'costs',
 })
 
 export default PetCost;
