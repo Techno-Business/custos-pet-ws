@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
       },
       type: {
-        type: Sequelize.CHAR(21),
+        type: Sequelize.STRING(21),
         allowNull: false,
       },
       date: {

@@ -10,7 +10,7 @@ const Cost = db.define('costs', {
         primaryKey: true,
     },
     type: {
-        type: DataTypes.CHAR(21),
+        type: DataTypes.STRING(21),
         allowNull: false,
     },
     date: {
