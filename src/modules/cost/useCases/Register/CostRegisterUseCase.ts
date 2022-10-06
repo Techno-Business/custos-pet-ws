@@ -43,18 +43,6 @@ export class CostRegisterUseCase {
             )
         }
 
-        //1. criar details
-        //2. criar costs associando details
-        //3. criar associações de costs e pets
-
-        //TODO: refactor cost save and put it inside the transaction
-        const savedCost = await this.costRepository.save(cost);
-        try {
-            await this.petCostRepository.save(cost.id, cost.petId);
-        } catch (e) {
-            //...
-        }
-
-        return savedCost;
+        return await this.petCostRepository.save(cost);
     }
 }

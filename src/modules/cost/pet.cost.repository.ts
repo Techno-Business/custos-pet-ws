@@ -1,3 +1,5 @@
+import { CostModel } from "./cost.model";
+
 export interface IPetCostRepository {
-    save(costId: string, petId: string[]): Promise<void>
+    save(cost: CostModel): Promise<CostModel>
 }
