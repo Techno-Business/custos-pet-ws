@@ -21,10 +21,10 @@ export class CostMapper {
             raw.type,
             raw.date,
             raw.price,
-            raw.description,
-            raw?.brand,
-            raw?.weight,
-            raw?.service_type,
+            raw['details.description'],
+            raw['details.brand'],
+            raw['details.weight'],
+            raw['details.service_type'],
             raw.id,
         )
     }

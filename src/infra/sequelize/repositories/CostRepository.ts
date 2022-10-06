@@ -11,27 +11,44 @@ export class CostRepository implements ICostRepository {
     ) {
     }
 
-    async save(cost: CostModel, petId: string): Promise<CostModel> {
+    async save(cost: CostModel): Promise<CostModel> {
+        const rawCost = this.costMapper.toEntity(cost);
+
         const savedCost = await this.costSequelizeModel.create({
-            id: cost.id,
-            type: cost.type,
-            date: cost.date,
-            price: cost.price,
+            id: rawCost.id,
+            type: rawCost.type,
+            date: rawCost.date,
+            price: rawCost.price,
             details: [{
-                id: cost.id,
-                service_type: cost.serviceType,
-                brand: cost.brand,
-                weight: cost.weight,
-                description: cost.description,
+                id: rawCost.id,
+                service_type: rawCost.service_type,
+                brand: rawCost.brand,
+                weight: rawCost.weight,
+                description: rawCost.description,
             }]
         }, {
-            through: 'pets_costs',
             include: {
                 model: Details,
                 as: 'details',
             },
         });
 
-        return this.costMapper.toModel(savedCost);
+        const savedCostLoaded = await this.findById(savedCost.getDataValue('id'));
+
+        return <CostModel>savedCostLoaded;
+    }
+
+    async findById(costId: string): Promise<CostModel | null> {
+        const pk = costId;
+
+        const cost = await this.costSequelizeModel.findByPk(pk, {
+            include: {
+                model: Details,
+                as: 'details',
+            },
+            raw: true,
+        });
+
+        return this.costMapper.toModel(cost);
     }
 }

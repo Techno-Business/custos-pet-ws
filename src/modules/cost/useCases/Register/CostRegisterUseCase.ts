@@ -45,8 +45,8 @@ export class CostRegisterUseCase {
         //2. criar costs associando details
         //3. criar associações de costs e pets
 
-        await this.costRepository.save(cost, String(data.baseCost.petId.pop()));
+        const savedCost = await this.costRepository.save(cost);
 
-        return cost;
+        return savedCost;
     }
 }
