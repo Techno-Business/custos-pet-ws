@@ -15,7 +15,7 @@ export class PetCostRepository implements IPetCostRepository {
     async save(cost: CostModel): Promise<CostModel> {
         try {
             const result = <CostModel> await this.petCostSequelizeModel.sequelize?.transaction(async (t) => {
-                const savedCost = await this.costRepository.save(cost);
+                let savedCost = await this.costRepository.save(cost);
 
                 for (let id of cost.petId) {
                     const exists = await this.petRepository.existsById(id);
@@ -28,6 +28,8 @@ export class PetCostRepository implements IPetCostRepository {
                         cost_id: cost.id,
                     }, { transaction: t });
                 }
+
+                savedCost.petId = cost.petId;
 
                 return savedCost;
             });

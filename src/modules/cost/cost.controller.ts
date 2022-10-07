@@ -8,10 +8,12 @@ import {
     VaccineCostRegisterDto
 } from "./useCases/Register/CostRegisterDto";
 import { CostRegisterUseCase } from "./useCases/Register/CostRegisterUseCase";
+import { CostMapper } from "./cost.mapper";
 
 export class CostController {
     constructor(
         private costRegisterUseCase: CostRegisterUseCase,
+        private costMapper: CostMapper,
     ) {
     }
 
@@ -55,8 +57,9 @@ export class CostController {
             }
 
             const cost = await this.costRegisterUseCase.execute(detailedCostRegisterDto);
+            const costDto = this.costMapper.toDto(cost);
 
-            return res.status(200).json(cost);
+            return res.status(200).json(costDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

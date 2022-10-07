@@ -37,6 +37,7 @@ const costRegisterUseCase = new CostRegisterUseCase(
 
 const costController = new CostController(
     costRegisterUseCase,
+    costMapper,
 );
 
 export { costController };

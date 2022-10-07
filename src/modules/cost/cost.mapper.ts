@@ -1,4 +1,6 @@
 import { CostModel } from "./cost.model";
+import {BaseCostDto, FeedCostDto, ServiceCostDto, VaccineCostDto} from "./cost.dto";
+import {CostType} from "./useCases/Register/CostRegisterDto";
 
 export class CostMapper {
     public toEntity (cost: CostModel): any {
@@ -27,5 +29,39 @@ export class CostMapper {
             raw['details.service_type'],
             raw.id,
         )
+    }
+
+    toDto(cost: CostModel): FeedCostDto | VaccineCostDto | ServiceCostDto {
+        if (cost.type == CostType.Service) {
+            return <ServiceCostDto> {
+                id: cost.id,
+                petId: cost.petId,
+                type: cost.type,
+                date: cost.date,
+                price: cost.price,
+                goal: cost.description,
+                serviceType: cost.serviceType,
+            }
+        } else if (cost.type == CostType.Vaccine) {
+            return <VaccineCostDto> {
+                id: cost.id,
+                petId: cost.petId,
+                type: cost.type,
+                date: cost.date,
+                price: cost.price,
+                goal: cost.description,
+            }
+        } else {
+            return <FeedCostDto> {
+                id: cost.id,
+                petId: cost.petId,
+                type: cost.type,
+                date: cost.date,
+                price: cost.price,
+                goal: cost.description,
+                brand: cost?.brand,
+                weight: cost?.weight,
+            }
+        }
     }
 }
