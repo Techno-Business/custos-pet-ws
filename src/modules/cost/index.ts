@@ -8,6 +8,7 @@ import CostSequelizeModel from '../../infra/sequelize/models/Cost';
 import PetCostSequelizeModel from '../../infra/sequelize/models/PetCost';
 import { CostRepository } from "../../infra/sequelize/repositories/CostRepository";
 import { PetCostRepository } from "../../infra/sequelize/repositories/PetCostRepository";
+import { CostShowUseCase } from "./useCases/Show/CostShowUseCase";
 
 const petMapper = new PetMapper();
 
@@ -35,8 +36,11 @@ const costRegisterUseCase = new CostRegisterUseCase(
     petCostRepository,
 );
 
+const costShowUseCase = new CostShowUseCase();
+
 const costController = new CostController(
     costRegisterUseCase,
+    costShowUseCase,
     costMapper,
 );
 

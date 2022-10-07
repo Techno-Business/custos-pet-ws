@@ -145,20 +145,20 @@ petRouter.delete('/:id', async (req: express.Request, res: express.Response) => 
     return petController.delete(req, res);
 });
 
-petRouter.post('/addcost', async (req: express.Request, res: express.Response) => {
-    try {   
-        await new Cost({
-            ...req.body
-        }).save();
-
-        res.json({ error: false, message: 'Cost apply' });
-
-    } catch (err) {
-        if (err instanceof Error) {
-            res.json({ error: true, message: err.message });
-        }
-    }
-});
+// petRouter.post('/addcost', async (req: express.Request, res: express.Response) => {
+//     try {
+//         await new Cost({
+//             ...req.body
+//         }).save();
+//
+//         res.json({ error: false, message: 'Cost apply' });
+//
+//     } catch (err) {
+//         if (err instanceof Error) {
+//             res.json({ error: true, message: err.message });
+//         }
+//     }
+// });
 
 petRouter.get('/costs/:id', async (req: express.Request, res: express.Response) => {
     try {
