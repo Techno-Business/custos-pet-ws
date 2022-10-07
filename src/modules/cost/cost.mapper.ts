@@ -1,5 +1,5 @@
 import { CostModel } from "./cost.model";
-import {BaseCostDto, FeedCostDto, ServiceCostDto, VaccineCostDto} from "./cost.dto";
+import { FeedCostDto, ServiceCostDto, VaccineCostDto } from "./cost.dto";
 import {CostType} from "./useCases/Register/CostRegisterDto";
 
 export class CostMapper {
