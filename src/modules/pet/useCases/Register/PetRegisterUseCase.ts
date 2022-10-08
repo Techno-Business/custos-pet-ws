@@ -1,16 +1,22 @@
 import { PetRegisterDto } from "./PetRegisterDto";
 import { PetModel } from "../../pet.model";
+import { IOwnerRepository } from "../../../owner/owner.repository";
 import { IPetRepository } from "../../pet.repository";
 import { v4 } from "uuid";
 import aws from "../../../../services/aws";
 
 export class PetRegisterUseCase {
     constructor(
+        private ownerRepository: IOwnerRepository,
         private petRepository: IPetRepository,
     ) {
     }
 
     async execute(data: PetRegisterDto, reqPhotoFile: Express.Multer.File | undefined): Promise<PetModel> {
+        if (!await this.ownerRepository.existsById(data.ownerId)) {
+            throw new Error("Nonexistent owner of id " + data.ownerId);
+        }
+
         const photo = this.toRandomString(String(reqPhotoFile?.originalname));
 
         await this.sendToS3Service(reqPhotoFile?.buffer, photo);
