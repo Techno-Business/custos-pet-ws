@@ -6,9 +6,19 @@ import { CostMapper } from "./cost.mapper";
 import PetSequelizeModel from '../../infra/sequelize/models/Pet';
 import CostSequelizeModel from '../../infra/sequelize/models/Cost';
 import PetCostSequelizeModel from '../../infra/sequelize/models/PetCost';
+import OwnerSequelizeModel from '../../infra/sequelize/models/Owner';
 import { CostRepository } from "../../infra/sequelize/repositories/CostRepository";
 import { PetCostRepository } from "../../infra/sequelize/repositories/PetCostRepository";
 import { CostShowUseCase } from "./useCases/Show/CostShowUseCase";
+import { OwnerRepository } from "../../infra/sequelize/repositories/OwnerRepository";
+import { OwnerMapper } from "../owner/owner.mapper";
+
+const ownerMapper = new OwnerMapper();
+
+const ownerRepository = new OwnerRepository(
+    OwnerSequelizeModel,
+    ownerMapper,
+);
 
 const petMapper = new PetMapper();
 
@@ -31,6 +41,7 @@ const petCostRepository = new PetCostRepository(
 );
 
 const costRegisterUseCase = new CostRegisterUseCase(
+    ownerRepository,
     petRepository,
     costRepository,
     petCostRepository,

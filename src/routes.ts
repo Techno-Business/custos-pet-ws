@@ -7,6 +7,6 @@ const apiV1Routes = Router();
 
 apiV1Routes.use('/owner', ownerRoutes);
 apiV1Routes.use('/owner/:ownerId/pets', petRoutes);
-apiV1Routes.use('/cost', costRoutes);
+apiV1Routes.use('/owner/:ownerId/costs', costRoutes);
 
 export { apiV1Routes };

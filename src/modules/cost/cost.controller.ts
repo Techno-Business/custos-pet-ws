@@ -21,6 +21,8 @@ export class CostController {
 
     async create(req: Request, res: Response) {
         try {
+            const ownerId = req.params.ownerId;
+
             const {
                 petId,
                 type,
@@ -58,7 +60,7 @@ export class CostController {
                 return res.status(400).json(costDetailsValidationErrors.map(v => v.constraints));
             }
 
-            const cost = await this.costRegisterUseCase.execute(detailedCostRegisterDto);
+            const cost = await this.costRegisterUseCase.execute(ownerId, detailedCostRegisterDto);
             const costDto = this.costMapper.toDto(cost);
 
             return res.status(200).json(costDto);
@@ -76,9 +78,11 @@ export class CostController {
 
     async show(req: Request, res: Response) {
         try {
+            const ownerId = req.params.ownerId;
+
             const costId = req.params.id;
 
-            const cost = await this.costShowUseCase.execute(costId);
+            const cost = await this.costShowUseCase.execute(ownerId, costId);
 
             return res.status(200).json(cost);
         } catch (e) {

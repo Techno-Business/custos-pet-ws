@@ -20,6 +20,16 @@ export class OwnerRepository implements IOwnerRepository {
         return !!owner;
     }
 
+    async existsById(id: string): Promise<boolean> {
+        const owner = await this.ownerSequelizeModel.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        return !!owner;
+    }
+
     async save(owner: OwnerModel): Promise<OwnerModel> {
         const ownerEntity = this.ownerMapper.toEntity(owner);
 

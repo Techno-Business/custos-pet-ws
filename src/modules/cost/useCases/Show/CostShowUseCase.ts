@@ -1,7 +1,7 @@
 
 export class CostShowUseCase {
-    async execute(costId: string) {
+    async execute(ownerId: string, costId: string) {
 
-        return "hello there, " + costId;
+        return "hello there, " + ownerId + ". " + costId;
     }
 }
