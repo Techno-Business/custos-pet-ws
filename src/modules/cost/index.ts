@@ -53,7 +53,11 @@ const costShowUseCase = new CostShowUseCase(
     costRepository,
 );
 
-const costListUseCase = new CostListUseCase();
+const costListUseCase = new CostListUseCase(
+    ownerRepository,
+    petCostRepository,
+    costRepository,
+);
 
 const costController = new CostController(
     costRegisterUseCase,

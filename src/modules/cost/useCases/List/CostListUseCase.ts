@@ -1,7 +1,21 @@
+import { IOwnerRepository } from "../../../owner/owner.repository";
+import { CostModel } from "../../cost.model";
+import { IPetCostRepository } from "../../pet.cost.repository";
 
 export class CostListUseCase {
-    execute(ownerId: string) {
+    constructor(
+        private ownerRepository: IOwnerRepository,
+        private petCostRepository: IPetCostRepository,
+    ) {
+    }
 
-        return "hello there " + ownerId;
+    async execute(ownerId: string) {
+        if (!await this.ownerRepository.existsById(ownerId)) {
+            throw new Error("Nonexistent owner of id " + ownerId);
+        }
+
+        const costs: CostModel[] | null = await this.petCostRepository.findAllByOwnerId(ownerId);
+
+        return costs;
     }
 }

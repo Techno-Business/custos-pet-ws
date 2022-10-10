@@ -34,4 +34,31 @@ export class PetCostRepository implements IPetCostRepository {
             throw (e);
         }
     }
+
+    async findAllByOwnerId(ownerId: string): Promise<CostModel[] | null> {
+        try {
+            const  result = <CostModel[]> await this.petCostSequelizeModel.sequelize?.transaction(async (t) => {
+                const pets = await this.petRepository.findAllByOwnerId(ownerId);
+                const petsIds = pets?.map((p) => p.id);
+                const costsIds = await this.petCostSequelizeModel.findAll({
+                    attributes: ['cost_id'],
+                    where: {
+                        pet_id: petsIds,
+                    },
+                    group: ['cost_id'],
+                    raw: true,
+                });
+                const costsIdsList = costsIds.map((c) => {
+                    return Object.values(c)[0];
+                });
+                const costs = await this.costRepository.findAllByIds(costsIdsList);
+
+                return costs;
+            });
+
+            return result;
+        } catch (e) {
+            throw (e);
+        }
+    }
 }

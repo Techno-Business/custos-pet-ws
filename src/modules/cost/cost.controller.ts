@@ -100,13 +100,14 @@ export class CostController {
         }
     }
 
-    index(req: Request, res: Response) {
+    async index(req: Request, res: Response) {
         try {
             const ownerId = req.params.ownerId;
 
-            const costs = this.costListUseCase.execute(ownerId);
+            const costs = await this.costListUseCase.execute(ownerId);
+            const costsDto = costs?.map((c) => this.costMapper.toDto(c));
 
-            return res.status(200).json(costs);
+            return res.status(200).json(costsDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
