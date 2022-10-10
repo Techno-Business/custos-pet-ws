@@ -10,11 +10,13 @@ import {
 import { CostRegisterUseCase } from "./useCases/Register/CostRegisterUseCase";
 import { CostMapper } from "./cost.mapper";
 import { CostShowUseCase } from "./useCases/Show/CostShowUseCase";
+import {CostListUseCase} from "./useCases/List/CostListUseCase";
 
 export class CostController {
     constructor(
         private costRegisterUseCase: CostRegisterUseCase,
         private costShowUseCase: CostShowUseCase,
+        private costListUseCase: CostListUseCase,
         private costMapper: CostMapper,
     ) {
     }
@@ -63,7 +65,7 @@ export class CostController {
             const cost = await this.costRegisterUseCase.execute(ownerId, detailedCostRegisterDto);
             const costDto = this.costMapper.toDto(cost);
 
-            return res.status(200).json(costDto);
+            return res.status(201).json(costDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
@@ -86,6 +88,25 @@ export class CostController {
             const costDto = this.costMapper.toDto(cost);
 
             return res.status(200).json(costDto);
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    index(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const costs = this.costListUseCase.execute(ownerId);
+
+            return res.status(200).json(costs);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

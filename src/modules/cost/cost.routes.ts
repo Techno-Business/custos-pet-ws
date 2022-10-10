@@ -11,4 +11,8 @@ costRouter.get('/:id', async (req: express.Request, res: express.Response) => {
    return costController.show(req, res);
 });
 
+costRouter.get('/', async (req: express.Request, res: express.Response) => {
+   return costController.index(req, res);
+});
+
 export default costRouter;
