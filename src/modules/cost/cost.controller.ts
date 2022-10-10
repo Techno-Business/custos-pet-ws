@@ -106,8 +106,10 @@ export class CostController {
 
             const costs = await this.costListUseCase.execute(ownerId);
             const costsDto = costs?.map((c) => this.costMapper.toDto(c));
+            //TODO: refactor to move this to somewhere else and keep the controller and res body clean
+            const costTotal = costsDto?.map(c => c.price).reduce((prev, curr) => prev + curr, 0);
 
-            return res.status(200).json(costsDto);
+            return res.status(200).json({costsDto, costTotal});
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
