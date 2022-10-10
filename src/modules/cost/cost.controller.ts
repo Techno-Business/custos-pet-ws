@@ -83,8 +83,9 @@ export class CostController {
             const costId = req.params.id;
 
             const cost = await this.costShowUseCase.execute(ownerId, costId);
+            const costDto = this.costMapper.toDto(cost);
 
-            return res.status(200).json(cost);
+            return res.status(200).json(costDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

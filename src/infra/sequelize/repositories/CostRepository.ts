@@ -49,6 +49,9 @@ export class CostRepository implements ICostRepository {
             raw: true,
         });
 
-        return this.costMapper.toModel(cost);
+        let hasCost: CostModel | null;
+        cost ? hasCost = this.costMapper.toModel(cost) : hasCost = null;
+
+        return hasCost;
     }
 }
