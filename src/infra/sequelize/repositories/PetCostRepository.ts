@@ -18,11 +18,6 @@ export class PetCostRepository implements IPetCostRepository {
                 let savedCost = await this.costRepository.save(cost);
 
                 for (let id of cost.petId) {
-                    const exists = await this.petRepository.existsById(id);
-                    if (!exists) {
-                        throw new Error('Nonexistent pet of id ' + id);
-                    }
-
                     await this.petCostSequelizeModel.create({
                         pet_id: id,
                         cost_id: cost.id,

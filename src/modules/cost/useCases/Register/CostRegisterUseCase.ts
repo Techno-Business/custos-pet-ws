@@ -19,6 +19,14 @@ export class CostRegisterUseCase {
             throw new Error("Nonexistent owner of id " + ownerId);
         }
 
+        const petsId = data.baseCost.petId;
+        for (let petId of petsId) {
+            const exists = await this.petRepository.existsById(petId);
+            if (!exists) {
+                throw new Error('Nonexistent pet of id ' + petId);
+            }
+        }
+
         let cost;
 
         if (data instanceof ServiceCostRegisterDto) {
