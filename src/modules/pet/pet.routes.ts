@@ -160,29 +160,29 @@ petRouter.delete('/:id', async (req: express.Request, res: express.Response) => 
 //     }
 // });
 
-petRouter.get('/costs/:id', async (req: express.Request, res: express.Response) => {
-    try {
-
-      const costs = await Cost.find({
-        petId: req.params.id
-      });
-
-      const costTotal = costs.map(item => item.price).reduce((prev, curr) => prev + curr, 0);
-
-      if (costs.length == 0) {
-        res.json({ error: true, message: 'Sem custo adicionado ao pet no momento' });
-        return false;
-      }
-      
-      res.json({ costs,
-        costTotal
-     });
-
-    } catch (err) {
-        if (err instanceof Error) {
-            res.json({ error: true, message: err.message });
-        }
-    }
-});
+// petRouter.get('/costs/:id', async (req: express.Request, res: express.Response) => {
+//     try {
+//
+//       const costs = await Cost.find({
+//         petId: req.params.id
+//       });
+//
+//       const costTotal = costs.map(item => item.price).reduce((prev, curr) => prev + curr, 0);
+//
+//       if (costs.length == 0) {
+//         res.json({ error: true, message: 'Sem custo adicionado ao pet no momento' });
+//         return false;
+//       }
+//
+//       res.json({ costs,
+//         costTotal
+//      });
+//
+//     } catch (err) {
+//         if (err instanceof Error) {
+//             res.json({ error: true, message: err.message });
+//         }
+//     }
+// });
 
 export default petRouter;
