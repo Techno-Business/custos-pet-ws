@@ -47,6 +47,12 @@ export class PetCostRepository implements IPetCostRepository {
                     raw: true,
                     transaction: t,
                 });
+
+                const areCostsIdsEmpty = Object.keys(costsIds).length === 0
+                if (areCostsIdsEmpty) {
+                    return ;
+                }
+
                 const costsIdsList = costsIds.map((c) => {
                     return Object.values(c)[0];
                 });

@@ -22,6 +22,12 @@ export class CostListUseCase {
 
         const costs: CostModel[] | null = await this.petCostRepository.findAllByPetId(petId);
 
+        //TODO: refactor to include an actual error response w/ adequate status code and etc instead of empty response
+
+        // if (!costs) {
+        //     throw new Error("This pet has no expenses yet");
+        // }
+
         return costs;
     }
 }
