@@ -103,8 +103,9 @@ export class CostController {
     async index(req: Request, res: Response) {
         try {
             const ownerId = req.params.ownerId;
+            const petId = req.params.petId;
 
-            const costs = await this.costListUseCase.execute(ownerId);
+            const costs = await this.costListUseCase.execute(ownerId, petId);
             const costsDto = costs?.map((c) => this.costMapper.toDto(c));
             //TODO: refactor to move this to somewhere else and keep the controller and res body clean
             const costTotal = costsDto?.map(c => c.price).reduce((prev, curr) => prev + curr, 0);

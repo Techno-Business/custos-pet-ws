@@ -35,18 +35,17 @@ export class PetCostRepository implements IPetCostRepository {
         }
     }
 
-    async findAllByOwnerId(ownerId: string): Promise<CostModel[] | null> {
+    async findAllByPetId(petId: string): Promise<CostModel[] | null> {
         try {
             const  result = <CostModel[]> await this.petCostSequelizeModel.sequelize?.transaction(async (t) => {
-                const pets = await this.petRepository.findAllByOwnerId(ownerId);
-                const petsIds = pets?.map((p) => p.id);
                 const costsIds = await this.petCostSequelizeModel.findAll({
                     attributes: ['cost_id'],
                     where: {
-                        pet_id: petsIds,
+                        pet_id: petId,
                     },
                     group: ['cost_id'],
                     raw: true,
+                    transaction: t,
                 });
                 const costsIdsList = costsIds.map((c) => {
                     return Object.values(c)[0];

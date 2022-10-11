@@ -55,6 +55,7 @@ const costShowUseCase = new CostShowUseCase(
 
 const costListUseCase = new CostListUseCase(
     ownerRepository,
+    petRepository,
     petCostRepository,
 );
 
