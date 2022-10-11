@@ -19,7 +19,7 @@ export class PetRegisterUseCase {
 
         const photo = this.toRandomString(String(reqPhotoFile?.originalname));
 
-        await this.sendToS3Service(reqPhotoFile?.buffer, photo);
+        await this.sendToS3Service(reqPhotoFile?.buffer, `pets/${photo}`);
 
         const pet = new PetModel(
             data.name,
