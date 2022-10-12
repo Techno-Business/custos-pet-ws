@@ -16,10 +16,10 @@ app.use(busboy());
 app.use(express.json());
 app.use(cors());
 
-app.use('/owner', ownerRoutes);
-app.use('/pet', petRoutes);
+// app.use('/owner', ownerRoutes);
+// app.use('/pet', petRoutes);
 app.use('/api/v1', apiV1Routes);
 
 app.listen(process.env.PORT || 8000, function () {
-  console.log('WS okay');
+  console.log('Server is running.');
 });
