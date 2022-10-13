@@ -10,6 +10,10 @@ export class OwnerSignUpUseCase {
     }
 
     async execute(data: OwnerSignUpDto): Promise<OwnerModel> {
+        if (data.password != data.passwordConfirmation) {
+            throw new Error('Password confirmation must be the same as password.');
+        }
+
         const ownerExists = await this.ownerRepository.existsByEmail(data.email);
 
         if (ownerExists) {

@@ -5,6 +5,7 @@ export interface OwnerSignUpDto {
     lastName: string;
     email: string;
     password: string;
+    passwordConfirmation: string;
 }
 
 export class OwnerSignUpDto {
@@ -20,16 +21,22 @@ export class OwnerSignUpDto {
     @MinLength(8)
     @MaxLength(64)
     password: string;
+    @IsNotEmpty()
+    @MinLength(8)
+    @MaxLength(64)
+    passwordConfirmation: string;
 
     constructor(
         firstName: string,
         lastName: string,
         email: string,
         password: string,
+        passwordConfirmation: string,
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.passwordConfirmation = passwordConfirmation;
     }
 }

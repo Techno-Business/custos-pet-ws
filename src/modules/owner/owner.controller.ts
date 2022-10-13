@@ -17,13 +17,14 @@ export class OwnerController {
 
     async signUp(req: Request, res: Response): Promise<Response<OwnerDto>> {
         try {
-            const { firstName, lastName, email, password } = req.body;
+            const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
             const ownerSignUpDto = new OwnerSignUpDto(
                 firstName,
                 lastName,
                 email,
                 password,
+                passwordConfirmation,
             )
 
             const validationErrors = await validate(ownerSignUpDto);
