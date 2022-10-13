@@ -1,4 +1,4 @@
-import {IsEmail, IsNotEmpty, IsString, MaxLength, MinLength} from "class-validator";
+import {IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength} from "class-validator";
 
 export interface OwnerSignUpDto {
     firstName: string;
@@ -20,10 +20,11 @@ export class OwnerSignUpDto {
     @IsNotEmpty()
     @MinLength(8)
     @MaxLength(64)
+    @Matches(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,64}$/, {
+        message: 'Password must contain at least a number, a lowercase letter, a uppercase letter and a special character'
+    })
     password: string;
     @IsNotEmpty()
-    @MinLength(8)
-    @MaxLength(64)
     passwordConfirmation: string;
 
     constructor(
