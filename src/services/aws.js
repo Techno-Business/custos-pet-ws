@@ -4,6 +4,7 @@ import AWS from 'aws-sdk';
 export default {
 
   uploadToS3: function (file, filename, acl = 'public-read') {
+
     return new Promise((resolve, reject) => {
       let IAM_USER_KEY = process.env.IAM_USER_KEY;
       let IAM_USER_SECRET = process.env.IAM_USER_SECRET;
@@ -19,7 +20,7 @@ export default {
         var params = {
           Bucket: BUCKET_NAME,
           Key: filename,
-          Body: file.data,
+          Body: file,
           ACL: acl,
         };
 
