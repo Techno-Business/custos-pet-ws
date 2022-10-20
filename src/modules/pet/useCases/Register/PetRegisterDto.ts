@@ -1,10 +1,11 @@
-import {IsNotEmpty, IsNumber, IsString} from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { PetSpecies } from "../../pet.species.enum";
 
 export interface PetRegisterDto {
     name: string;
     age: number;
     sex: string;
-    species: string;
+    species: PetSpecies;
     breed: string;
     ownerId: string;
 }
@@ -20,8 +21,8 @@ export class PetRegisterDto {
     @IsString()
     sex: string;
     @IsNotEmpty()
-    @IsString()
-    species: string;
+    @IsEnum(PetSpecies)
+    species: PetSpecies;
     @IsNotEmpty()
     @IsString()
     breed: string;
@@ -33,7 +34,7 @@ export class PetRegisterDto {
         name: string,
         age: number,
         sex: string,
-        species: string,
+        species: PetSpecies,
         breed: string,
         ownerId: string,
     ) {
