@@ -1,4 +1,4 @@
-import { PetSpecies } from "./pet.species.enum";
+import { PetCategories } from "./pet.categories.enum";
 
 export interface PetDto {
     id: string;
@@ -6,7 +6,7 @@ export interface PetDto {
     photo: string;
     age: number;
     sex: string;
-    species: PetSpecies;
+    species: PetCategories;
     breed: string;
     ownerId: string;
 }
