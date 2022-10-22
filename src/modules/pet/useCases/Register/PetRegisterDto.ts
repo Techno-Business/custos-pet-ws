@@ -6,7 +6,6 @@ export interface PetRegisterDto {
     age: number;
     sex: string;
     species: PetCategories;
-    breed: string;
     ownerId: string;
 }
 
@@ -25,9 +24,6 @@ export class PetRegisterDto {
     species: PetCategories;
     @IsNotEmpty()
     @IsString()
-    breed: string;
-    @IsNotEmpty()
-    @IsString()
     ownerId: string;
 
     constructor(
@@ -35,14 +31,12 @@ export class PetRegisterDto {
         age: number,
         sex: string,
         species: PetCategories,
-        breed: string,
         ownerId: string,
     ) {
         this.name = name;
         this.age = age;
         this.sex = sex;
         this.species = species;
-        this.breed = breed;
         this.ownerId = ownerId;
     }
 }

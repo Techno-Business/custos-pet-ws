@@ -27,7 +27,6 @@ export class PetRegisterUseCase {
             data.age,
             data.sex,
             data.species,
-            data.breed,
             data.ownerId,
         );
 

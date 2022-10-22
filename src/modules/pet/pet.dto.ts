@@ -7,6 +7,5 @@ export interface PetDto {
     age: number;
     sex: string;
     species: PetCategories;
-    breed: string;
     ownerId: string;
 }

@@ -10,7 +10,6 @@ export class PetMapper {
             age: pet.age,
             sex: pet.sex,
             species: pet.species,
-            breed: pet.breed,
             owner_id: pet.ownerId.toString(),
         }
     }
@@ -22,7 +21,6 @@ export class PetMapper {
             raw.age,
             raw.sex,
             raw.species,
-            raw.breed,
             raw.ownerId,
             raw.id,
         );
@@ -36,7 +34,6 @@ export class PetMapper {
             age: pet.age,
             sex: pet.sex,
             species: pet.species,
-            breed: pet.breed,
             ownerId: pet.ownerId,
         }
     }
