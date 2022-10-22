@@ -32,10 +32,6 @@ const Pet = db.define('pets', {
         type: DataTypes.STRING(255),
         allowNull: false,
     },
-    breed: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-    },
     owner_id: {
         type: DataTypes.UUID,
         allowNull: false,
