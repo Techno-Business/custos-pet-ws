@@ -5,7 +5,7 @@ export interface PetRegisterDto {
     name: string;
     age: number;
     sex: string;
-    species: PetCategories;
+    category: PetCategories;
     ownerId: string;
 }
 
@@ -21,7 +21,7 @@ export class PetRegisterDto {
     sex: string;
     @IsNotEmpty()
     @IsEnum(PetCategories)
-    species: PetCategories;
+    category: PetCategories;
     @IsNotEmpty()
     @IsString()
     ownerId: string;
@@ -30,13 +30,13 @@ export class PetRegisterDto {
         name: string,
         age: number,
         sex: string,
-        species: PetCategories,
+        category: PetCategories,
         ownerId: string,
     ) {
         this.name = name;
         this.age = age;
         this.sex = sex;
-        this.species = species;
+        this.category = category;
         this.ownerId = ownerId;
     }
 }

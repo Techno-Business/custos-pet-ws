@@ -9,7 +9,7 @@ export class PetMapper {
             photo: pet.photo,
             age: pet.age,
             sex: pet.sex,
-            species: pet.species,
+            category: pet.category,
             owner_id: pet.ownerId.toString(),
         }
     }
@@ -20,7 +20,7 @@ export class PetMapper {
             raw.photo,
             raw.age,
             raw.sex,
-            raw.species,
+            raw.category,
             raw.ownerId,
             raw.id,
         );
@@ -33,7 +33,7 @@ export class PetMapper {
             photo: pet.photo,
             age: pet.age,
             sex: pet.sex,
-            species: pet.species,
+            category: pet.category,
             ownerId: pet.ownerId,
         }
     }

@@ -6,7 +6,7 @@ export class PetModel {
     private _photo: string;
     private _age: number;
     private _sex: string;
-    private _species: string;
+    private _category: string;
     private _ownerId: string;
 
     constructor(
@@ -14,7 +14,7 @@ export class PetModel {
         photo: string,
         age: number,
         sex: string,
-        species: string,
+        category: string,
         ownerId: string,
         id?: string,
     ) {
@@ -27,7 +27,7 @@ export class PetModel {
         this._photo = photo;
         this._age = age;
         this._sex = sex;
-        this._species = species;
+        this._category = category;
         this._ownerId = ownerId;
     }
 
@@ -71,12 +71,12 @@ export class PetModel {
         this._sex = value;
     }
 
-    get species(): string {
-        return this._species;
+    get category(): string {
+        return this._category;
     }
 
-    set species(value: string) {
-        this._species = value;
+    set category(value: string) {
+        this._category = value;
     }
 
     get ownerId(): string {
