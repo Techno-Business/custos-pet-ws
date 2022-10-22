@@ -5,8 +5,10 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "node dist/index.js"
+    "build": "tsc -p tsconfig.json && npx sequelize-cli db:migrate",
+    "start": "node dist/index.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "demigrate": "npx sequelize-cli db:migrate:undo"
   },
   "author": "",
   "license": "ISC",
