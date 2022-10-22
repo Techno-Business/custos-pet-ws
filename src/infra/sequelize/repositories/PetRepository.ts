@@ -81,7 +81,7 @@ export class PetRepository implements IPetRepository {
             photo: rawPet.photo,
             age: rawPet.age,
             sex: rawPet.sex,
-            species: rawPet.species,
+            category: rawPet.category,
             breed: rawPet.breed,
         },{
             where: {
