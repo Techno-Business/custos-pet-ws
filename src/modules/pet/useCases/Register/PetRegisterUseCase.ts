@@ -26,8 +26,7 @@ export class PetRegisterUseCase {
             `pets/${photo}`,
             data.age,
             data.sex,
-            data.species,
-            data.breed,
+            data.category,
             data.ownerId,
         );
 

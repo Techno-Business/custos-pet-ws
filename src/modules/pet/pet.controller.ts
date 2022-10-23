@@ -21,7 +21,7 @@ export class PetController {
 
     async create(req: Request, res: Response) {
         try {
-            const { name, age, sex, species, breed } = req.body;
+            const { name, age, sex, category } = req.body;
             const ownerId = req.params.ownerId;
 
             //TODO: remove age number assertion/parsing
@@ -29,8 +29,7 @@ export class PetController {
                 name,
                 +age,
                 sex,
-                species,
-                breed,
+                category,
                 ownerId,
             );
 
@@ -117,7 +116,7 @@ export class PetController {
 
     async update(req: Request, res: Response) {
         try {
-            const { name, age, sex, species, breed } = req.body;
+            const { name, age, sex, category } = req.body;
             const ownerId = req.params.ownerId;
             const petId = req.params.id;
 
@@ -126,8 +125,7 @@ export class PetController {
                 name,
                 +age,
                 sex,
-                species,
-                breed,
+                category,
                 ownerId,
             );
 

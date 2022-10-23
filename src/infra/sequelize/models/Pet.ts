@@ -28,11 +28,7 @@ const Pet = db.define('pets', {
         type: DataTypes.STRING(6),
         allowNull: false,
     },
-    species: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-    },
-    breed: {
+    category: {
         type: DataTypes.STRING(255),
         allowNull: false,
     },

@@ -23,8 +23,7 @@ export class PetEditUseCase {
         pet.name = petRegisterDto.name;
         pet.age = petRegisterDto.age;
         pet.sex = petRegisterDto.sex;
-        pet.species = petRegisterDto.species;
-        pet.breed = petRegisterDto.breed;
+        pet.category = petRegisterDto.category;
 
         if (reqPhotoFile) {
             const filenameParts = pet.photo.split('/');
