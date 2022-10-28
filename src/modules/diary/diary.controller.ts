@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
-import {DiaryRegisterDto} from "./useCases/Register/DiaryRegisterDto";
-import {validate} from "class-validator";
+import { DiaryRegisterDto } from "./useCases/Register/DiaryRegisterDto";
+import { validate } from "class-validator";
+import { DiaryRegisterUseCase } from "./useCases/Register/DiaryRegisterUseCase";
 
 export class DiaryController {
     constructor(
+        private diaryRegisterUseCase: DiaryRegisterUseCase,
     ) {
     }
 
@@ -36,7 +38,9 @@ export class DiaryController {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
 
-            return res.status(201).json(diaryRegisterDto);
+            const diary = await this.diaryRegisterUseCase.execute(ownerId, diaryRegisterDto);
+
+            return res.status(201).json(diary);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

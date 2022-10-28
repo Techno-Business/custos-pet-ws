@@ -1,5 +1,8 @@
 import { DiaryController } from './diary.controller';
+import { DiaryRegisterUseCase } from "./useCases/Register/DiaryRegisterUseCase";
 
-const diaryController = new DiaryController();
+const diaryRegisterUseCase = new DiaryRegisterUseCase();
+
+const diaryController = new DiaryController(diaryRegisterUseCase);
 
 export { diaryController };
