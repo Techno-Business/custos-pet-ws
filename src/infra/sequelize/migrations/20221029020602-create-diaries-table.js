@@ -25,13 +25,6 @@ module.exports = {
           key: 'id',
         }
       },
-      pet_id: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: 'pets',
-          key: 'id',
-        }},
       created_at: {
         type: Sequelize.DATE,
       },
