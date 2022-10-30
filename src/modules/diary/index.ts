@@ -5,6 +5,8 @@ import { DiaryRepository } from "../../infra/sequelize/repositories/DiaryReposit
 import { PetDiaryRepository } from "../../infra/sequelize/repositories/PetDiaryRepository";
 import DiarySequelizeModel from '../../infra/sequelize/models/Diary';
 import PetDiarySequelizeModel from '../../infra/sequelize/models/PetDiary';
+import AddressSequelizeModel from '../../infra/sequelize/models/Address';
+import { AddressRepository } from "../../infra/sequelize/repositories/AddressRepository";
 
 const diaryMapper = new DiaryMapper();
 
@@ -13,9 +15,14 @@ const diaryRepository = new DiaryRepository(
     diaryMapper,
 );
 
+const addressRepository = new AddressRepository(
+    AddressSequelizeModel,
+);
+
 const petDiaryRepository = new PetDiaryRepository(
     PetDiarySequelizeModel,
     diaryRepository,
+    addressRepository,
 );
 
 const diaryRegisterUseCase = new DiaryRegisterUseCase(

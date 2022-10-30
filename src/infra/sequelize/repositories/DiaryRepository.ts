@@ -11,25 +11,14 @@ export class DiaryRepository implements IDiaryRepository {
     ) {
     }
 
-    async save(diary: DiaryModel): Promise<DiaryModel> {
+    async save(diary: DiaryModel, addressId: string): Promise<DiaryModel> {
         const rawDiary = this.diaryMapper.toEntity(diary);
 
         const savedDiary = await this.diarySequelizeModel.create({
             id: rawDiary.id,
             title: rawDiary.title,
             date: rawDiary.date,
-            addresses: [{
-                id: rawDiary.id,
-                street: rawDiary.street,
-                number: rawDiary.number,
-                postal_code: rawDiary.postal_code,
-                neighbourhood: rawDiary.neighbourhood,
-            }],
-        },{
-            include: {
-                model: Address,
-                as: 'addresses',
-            }
+            address_id: addressId,
         });
 
         const savedDiaryLoaded = await this.findById(savedDiary.getDataValue('id'));
