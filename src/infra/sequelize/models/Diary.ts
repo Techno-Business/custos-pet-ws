@@ -33,7 +33,12 @@ const Diary = db.define('diaries', {
     tableName: 'diaries',
 });
 
-Address.hasMany(Diary);
-Diary.belongsTo(Address);
+Address.hasMany(Diary, {
+    foreignKey: 'address_id',
+});
+Diary.belongsTo(Address, {
+    foreignKey: 'address_id',
+    as: 'addresses',
+});
 
 export default Diary;

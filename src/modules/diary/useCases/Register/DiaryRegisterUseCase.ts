@@ -1,8 +1,11 @@
 import { DiaryRegisterDto } from "./DiaryRegisterDto";
 import { DiaryModel } from "../../diary.model";
+import { IDiaryRepository } from "../../diary.repository";
 
 export class DiaryRegisterUseCase {
-    constructor() {
+    constructor(
+        private diaryRepository: IDiaryRepository,
+    ) {
     }
 
     async execute(ownerId: string, data: DiaryRegisterDto): Promise<DiaryModel> {
@@ -16,6 +19,6 @@ export class DiaryRegisterUseCase {
             data.neighbourhood,
         )
 
-        return diary;
+        return await this.diaryRepository.save(diary);
     }
 }
