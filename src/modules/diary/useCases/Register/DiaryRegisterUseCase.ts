@@ -1,10 +1,10 @@
 import { DiaryRegisterDto } from "./DiaryRegisterDto";
 import { DiaryModel } from "../../diary.model";
-import { IDiaryRepository } from "../../diary.repository";
+import { IPetDiaryRepository } from "../../pet.diary.repository";
 
 export class DiaryRegisterUseCase {
     constructor(
-        private diaryRepository: IDiaryRepository,
+        private petDiaryRepository: IPetDiaryRepository,
     ) {
     }
 
@@ -19,6 +19,6 @@ export class DiaryRegisterUseCase {
             data.neighbourhood,
         )
 
-        return await this.diaryRepository.save(diary);
+        return await this.petDiaryRepository.save(diary);
     }
 }
