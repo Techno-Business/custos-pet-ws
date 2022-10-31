@@ -3,6 +3,7 @@ import { DiaryModel } from "../../../modules/diary/diary.model";
 import Diary from '../models/Diary'
 import Address from '../models/Address';
 import { DiaryMapper } from "../../../modules/diary/diary.mapper";
+import { Model } from "sequelize";
 
 export class DiaryRepository implements IDiaryRepository {
     constructor(
@@ -41,6 +42,24 @@ export class DiaryRepository implements IDiaryRepository {
         diary ? hasDiary = this.diaryMapper.toModel(diary) : hasDiary = null;
 
         return hasDiary;
+    }
+
+    async findAllByIds(diariesIds: string[]): Promise<DiaryModel[] | null> {
+        const diaries = await this.diarySequelizeModel.findAll({
+            where: {
+                id: diariesIds,
+            },
+            include: {
+                model: Address,
+                as: 'addresses',
+            },
+            raw: true,
+        });
+
+        let hasDiaries: DiaryModel[] | null;
+        diaries ? hasDiaries = diaries.map((diary: Model<DiaryModel>) => this.diaryMapper.toModel(diary)) : hasDiaries = null;
+
+        return hasDiaries;
     }
 
 }

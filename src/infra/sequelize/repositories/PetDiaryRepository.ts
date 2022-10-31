@@ -50,4 +50,36 @@ export class PetDiaryRepository implements IPetDiaryRepository {
             throw (e);
         }
     }
+
+    async findAllByPetId(petId: string): Promise<DiaryModel[] | null> {
+        try {
+            const result = <DiaryModel[]> await this.petDiarySequelizeModel.sequelize?.transaction(async (t) => {
+                const diariesIds = await this.petDiarySequelizeModel.findAll({
+                    attributes: ['diary_id'],
+                    where: {
+                        pet_id: petId,
+                    },
+                    group: ['diary_id'],
+                    raw: true,
+                    transaction: t,
+                });
+
+                const areDiariesIdsEmpty = Object.keys(diariesIds).length === 0;
+                if (areDiariesIdsEmpty) {
+                    return ;
+                }
+
+                const diariesIdsList = diariesIds.map((d) => {
+                    return Object.values(d)[0];
+                });
+                const diaries = await this.diaryRepository.findAllByIds(diariesIdsList);
+
+                return diaries;
+            });
+
+            return result;
+        } catch (e) {
+            throw (e);
+        }
+    }
 }
