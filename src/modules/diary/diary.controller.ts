@@ -4,11 +4,13 @@ import { validate } from "class-validator";
 import { DiaryRegisterUseCase } from "./useCases/Register/DiaryRegisterUseCase";
 import { DiaryMapper } from "./diary.mapper";
 import { DiaryListUseCase } from "./useCases/List/DiaryListUseCase";
+import { DiaryShowUseCase } from "./useCases/Show/DiaryShowUseCase";
 
 export class DiaryController {
     constructor(
         private diaryRegisterUseCase: DiaryRegisterUseCase,
         private diaryListUseCase: DiaryListUseCase,
+        private diaryShowUseCase: DiaryShowUseCase,
         private diaryMapper: DiaryMapper,
     ) {
     }
@@ -46,6 +48,28 @@ export class DiaryController {
             const diaryDto = this.diaryMapper.toDto(diary);
 
             return res.status(201).json(diaryDto);
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    async show(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const diaryId = req.params.id;
+
+            const diary = await this.diaryShowUseCase.execute(ownerId, diaryId);
+            //const diaryDto = this.diaryMapper.toDto(diary);
+
+            return res.status(200).json(diary);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
