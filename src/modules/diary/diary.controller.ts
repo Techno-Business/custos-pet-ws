@@ -67,9 +67,9 @@ export class DiaryController {
             const diaryId = req.params.id;
 
             const diary = await this.diaryShowUseCase.execute(ownerId, diaryId);
-            //const diaryDto = this.diaryMapper.toDto(diary);
+            const diaryDto = this.diaryMapper.toDto(diary);
 
-            return res.status(200).json(diary);
+            return res.status(200).json(diaryDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
