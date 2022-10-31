@@ -7,11 +7,14 @@ import DiarySequelizeModel from '../../infra/sequelize/models/Diary';
 import PetDiarySequelizeModel from '../../infra/sequelize/models/PetDiary';
 import AddressSequelizeModel from '../../infra/sequelize/models/Address';
 import OwnerSequelizeModel from '../../infra/sequelize/models/Owner';
+import PetSequelizeModel from '../../infra/sequelize/models/Pet';
 import { AddressRepository } from "../../infra/sequelize/repositories/AddressRepository";
 import { DiaryListUseCase } from "./useCases/List/DiaryListUseCase";
 import { DiaryShowUseCase } from "./useCases/Show/DiaryShowUseCase";
 import { OwnerRepository } from "../../infra/sequelize/repositories/OwnerRepository";
 import { OwnerMapper } from "../owner/owner.mapper";
+import { PetRepository } from "../../infra/sequelize/repositories/PetRepository";
+import { PetMapper } from "../pet/pet.mapper";
 
 const diaryMapper = new DiaryMapper();
 
@@ -37,12 +40,23 @@ const ownerRepository = new OwnerRepository(
     ownerMapper,
 );
 
+const petMapper = new PetMapper();
+
+const petRepository = new PetRepository(
+    PetSequelizeModel,
+    petMapper,
+);
+
 const diaryRegisterUseCase = new DiaryRegisterUseCase(
+    ownerRepository,
+    petRepository,
     petDiaryRepository,
 );
 
 const diaryListUseCase = new DiaryListUseCase(
-    petDiaryRepository
+    ownerRepository,
+    petRepository,
+    petDiaryRepository,
 );
 
 const diaryShowUseCase = new DiaryShowUseCase(
