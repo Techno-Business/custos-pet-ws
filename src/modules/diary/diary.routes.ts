@@ -7,4 +7,8 @@ diaryRouter.post('/', async (req: express.Request, res: express.Response) => {
     return diaryController.create(req, res);
 });
 
+diaryRouter.get('/pets/:petId', async (req: express.Request, res: express.Response) => {
+    return diaryController.index(req, res);
+});
+
 export default diaryRouter;

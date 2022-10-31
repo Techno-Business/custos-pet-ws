@@ -1,4 +1,4 @@
-import {IsArray, IsDate, IsISO8601, IsNotEmpty, IsRFC3339, IsString, Length} from "class-validator";
+import { IsArray, IsISO8601, IsNotEmpty, IsString, Length } from "class-validator";
 
 export class DiaryRegisterDto {
     @IsNotEmpty()
