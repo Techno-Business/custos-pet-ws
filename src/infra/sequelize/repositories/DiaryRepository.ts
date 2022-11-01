@@ -4,10 +4,12 @@ import Diary from '../models/Diary'
 import Address from '../models/Address';
 import { DiaryMapper } from "../../../modules/diary/diary.mapper";
 import { Model } from "sequelize";
+import PetDiary from "../models/PetDiary";
 
 export class DiaryRepository implements IDiaryRepository {
     constructor(
         private diarySequelizeModel: typeof Diary,
+        private petDiarySequelizeModel: typeof PetDiary,
         private diaryMapper: DiaryMapper,
     ) {
     }
@@ -39,7 +41,26 @@ export class DiaryRepository implements IDiaryRepository {
         });
 
         let hasDiary: DiaryModel | null;
-        diary ? hasDiary = this.diaryMapper.toModel(diary) : hasDiary = null;
+        if (diary) {
+            const petsIds = await this.petDiarySequelizeModel.findAll({
+                attributes: ['pet_id'],
+                where: {
+                    diary_id: diaryId,
+                },
+                group: ['pet_id'],
+                raw: true,
+            });
+
+            const petsIdsList = petsIds.map((p) => {
+                return Object.values(p)[0];
+            });
+
+            hasDiary = this.diaryMapper.toModel(diary);
+
+            hasDiary.petId = petsIdsList;
+        } else {
+            hasDiary = null;
+        }
 
         return hasDiary;
     }

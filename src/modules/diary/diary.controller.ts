@@ -112,7 +112,32 @@ export class DiaryController {
 
             const diaryId = req.params.id;
 
-            const diary = await this.diaryUpdateUseCase.execute(ownerId, diaryId);
+            const {
+                petId,
+                title,
+                date,
+                street,
+                number,
+                postal_code,
+                neighbourhood,
+            } = req.body;
+
+            const diaryRegisterDto = new DiaryRegisterDto(
+                petId,
+                title,
+                date,
+                street,
+                number,
+                postal_code,
+                neighbourhood,
+            );
+
+            const validationErrors = await validate(diaryRegisterDto);
+            if (validationErrors.length > 0) {
+                return res.status(400).json(validationErrors.map(v => v.constraints));
+            }
+
+            const diary = await this.diaryUpdateUseCase.execute(ownerId, diaryId, diaryRegisterDto);
 
             return res.status(200).json(diary);
         } catch (e) {
