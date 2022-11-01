@@ -8,7 +8,8 @@
     "build": "tsc -p tsconfig.json && npx sequelize-cli db:migrate",
     "start": "node dist/index.js",
     "migrate": "npx sequelize-cli db:migrate",
-    "demigrate": "npx sequelize-cli db:migrate:undo"
+    "demigrate": "npx sequelize-cli db:migrate:undo",
+    "swagger-autogen": "node swagger.js"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +29,8 @@
     "pg": "^8.8.0",
     "sequelize": "^6.23.1",
     "sequelize-cli": "^6.4.1",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.5.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -37,7 +40,10 @@
     "@types/express": "^4.17.14",
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.7",
+    "@types/swagger-jsdoc": "^6.0.1",
+    "@types/swagger-ui-express": "^4.1.3",
     "@types/uuid": "^8.3.4",
+    "swagger-autogen": "^2.22.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.3"
   }
