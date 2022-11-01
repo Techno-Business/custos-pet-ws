@@ -83,4 +83,25 @@ export class DiaryRepository implements IDiaryRepository {
         return hasDiaries;
     }
 
+    async update(newDiary: DiaryModel, addressId: string): Promise<DiaryModel> {
+        const rawDiary = this.diaryMapper.toEntity(newDiary);
+
+        let updatedDiary: any = await this.diarySequelizeModel.update({
+            title: rawDiary.title,
+            date: rawDiary.date,
+            address_id: addressId,
+        },{
+            where: {
+                id: rawDiary.id
+            },
+            returning: true,
+            // @ts-ignore
+            raw: true,
+        });
+
+        updatedDiary = updatedDiary[1][0];
+
+        return this.diaryMapper.toModel(updatedDiary);
+    }
+
 }

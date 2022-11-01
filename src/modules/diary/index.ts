@@ -33,6 +33,7 @@ const petDiaryRepository = new PetDiaryRepository(
     PetDiarySequelizeModel,
     diaryRepository,
     addressRepository,
+    diaryMapper,
 );
 
 const ownerMapper = new OwnerMapper();
@@ -69,6 +70,7 @@ const diaryShowUseCase = new DiaryShowUseCase(
 const diaryUpdateUseCase = new DiaryUpdateUseCase(
     ownerRepository,
     diaryRepository,
+    petDiaryRepository,
 );
 
 const diaryController = new DiaryController(

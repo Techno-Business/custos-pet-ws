@@ -1,12 +1,14 @@
 import { DiaryRegisterDto } from "../Register/DiaryRegisterDto";
 import { IOwnerRepository } from "../../../owner/owner.repository";
 import { IDiaryRepository } from "../../diary.repository";
-import {DiaryModel} from "../../diary.model";
+import { DiaryModel } from "../../diary.model";
+import { IPetDiaryRepository } from "../../pet.diary.repository";
 
 export class DiaryUpdateUseCase {
     constructor(
         private ownerRepository: IOwnerRepository,
         private diaryRepository: IDiaryRepository,
+        private petDiaryRepository: IPetDiaryRepository,
     ) {
     }
 
@@ -20,6 +22,19 @@ export class DiaryUpdateUseCase {
             throw new Error("Nonexistent diary of id " + diaryId);
         }
 
-        return "hello there, " + ownerId + ", " + diaryId;
+        const newDiary = new DiaryModel(
+            data.petId,
+            data.title,
+            data.date,
+            data.street,
+            data.number,
+            data.postalCode,
+            data.neighbourhood,
+            diaryId,
+        );
+
+        const updatedDiary = this.petDiaryRepository.update(diary, newDiary);
+
+        return updatedDiary;
     }
 }
