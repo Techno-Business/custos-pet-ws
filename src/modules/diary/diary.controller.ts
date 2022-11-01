@@ -5,12 +5,14 @@ import { DiaryRegisterUseCase } from "./useCases/Register/DiaryRegisterUseCase";
 import { DiaryMapper } from "./diary.mapper";
 import { DiaryListUseCase } from "./useCases/List/DiaryListUseCase";
 import { DiaryShowUseCase } from "./useCases/Show/DiaryShowUseCase";
+import { DiaryUpdateUseCase } from "./useCases/Update/DiaryUpdateUseCase";
 
 export class DiaryController {
     constructor(
         private diaryRegisterUseCase: DiaryRegisterUseCase,
         private diaryListUseCase: DiaryListUseCase,
         private diaryShowUseCase: DiaryShowUseCase,
+        private diaryUpdateUseCase: DiaryUpdateUseCase,
         private diaryMapper: DiaryMapper,
     ) {
     }
@@ -92,6 +94,27 @@ export class DiaryController {
             const diariesDto = diaries.map((d) => this.diaryMapper.toDto(d));
 
             return res.status(200).json(diariesDto);
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    async update(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const diaryId = req.params.id;
+
+            const diary = await this.diaryUpdateUseCase.execute(ownerId, diaryId);
+
+            return res.status(200).json(diary);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
