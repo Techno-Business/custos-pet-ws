@@ -3,14 +3,13 @@ import { DiaryModel } from "../../../modules/diary/diary.model";
 import PetDiary from '../models/PetDiary'
 import { IDiaryRepository } from "../../../modules/diary/diary.repository";
 import { IAddressRepository } from "../../../modules/diary/address.repository";
-import { DiaryMapper } from "../../../modules/diary/diary.mapper";
+import { v4 } from "uuid";
 
 export class PetDiaryRepository implements IPetDiaryRepository {
     constructor(
         private petDiarySequelizeModel: typeof PetDiary,
         private diaryRepository: IDiaryRepository,
         private addressRepository: IAddressRepository,
-        private diaryMapper: DiaryMapper,
     ) {
     }
 
@@ -72,9 +71,9 @@ export class PetDiaryRepository implements IPetDiaryRepository {
         }
     }
 
-    async update(currentDiary: DiaryModel, newDiary: DiaryModel): Promise<DiaryModel> {
+    async update(currentDiary: DiaryModel, newDiary: DiaryModel): Promise<void> {
         try {
-            const result = <DiaryModel> await this.petDiarySequelizeModel.sequelize?.transaction(async (t) => {
+            await this.petDiarySequelizeModel.sequelize?.transaction(async (t) => {
                 const removedPetIds = currentDiary.petId.filter((id) => !newDiary.petId.includes(id));
                 const addedPetIds = newDiary.petId.filter((id) => !currentDiary.petId.includes(id));
 
@@ -82,12 +81,13 @@ export class PetDiaryRepository implements IPetDiaryRepository {
                     await this.petDiarySequelizeModel.destroy({
                         where: {
                             pet_id: removedPetIds
-                        }
+                        },
+                        transaction: t,
                     });
                 }
 
                 if (addedPetIds.length > 0) {
-                    let addedPetDiary = [];
+                    let addedPetDiary: { pet_id: string, diary_id: string }[] = [];
                     for (let id of addedPetIds) {
                         const petDiaryObj = {
                             pet_id: id,
@@ -96,17 +96,13 @@ export class PetDiaryRepository implements IPetDiaryRepository {
                         addedPetDiary.push(petDiaryObj);
                     }
 
-                    await this.petDiarySequelizeModel.bulkCreate(addedPetDiary);
+                    await this.petDiarySequelizeModel.bulkCreate(addedPetDiary, { transaction: t });
                 }
 
                 const addressId = await this.findAddressIdOrCreate(newDiary);
 
-                const updatedDiary = await this.diaryRepository.update(newDiary, addressId);
-
-                return updatedDiary;
+                await this.diaryRepository.update(newDiary, addressId);
             });
-
-            return result;
         } catch (e) {
             throw (e);
         }
@@ -124,8 +120,9 @@ export class PetDiaryRepository implements IPetDiaryRepository {
         if (hasAddress) {
             addressId = hasAddress;
         } else {
-            await this.addressRepository.save(diary.id, diary.street, diary.number, diary.postalCode, diary.neighbourhood);
-            addressId = diary.id;
+            const uuid = v4();
+            addressId = uuid;
+            await this.addressRepository.save(addressId, diary.street, diary.number, diary.postalCode, diary.neighbourhood);
         }
 
         return addressId;

@@ -137,9 +137,9 @@ export class DiaryController {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
 
-            const diary = await this.diaryUpdateUseCase.execute(ownerId, diaryId, diaryRegisterDto);
+            await this.diaryUpdateUseCase.execute(ownerId, diaryId, diaryRegisterDto);
 
-            return res.status(200).json(diary);
+            return res.status(204).json();
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

@@ -12,7 +12,7 @@ export class DiaryUpdateUseCase {
     ) {
     }
 
-    async execute(ownerId: string, diaryId: string, data: DiaryRegisterDto) {
+    async execute(ownerId: string, diaryId: string, data: DiaryRegisterDto): Promise<void> {
         if (!await this.ownerRepository.existsById(ownerId)) {
             throw new Error("Nonexistent owner of id " + ownerId);
         }
@@ -33,8 +33,6 @@ export class DiaryUpdateUseCase {
             diaryId,
         );
 
-        const updatedDiary = this.petDiaryRepository.update(diary, newDiary);
-
-        return updatedDiary;
+        await this.petDiaryRepository.update(diary, newDiary);
     }
 }
