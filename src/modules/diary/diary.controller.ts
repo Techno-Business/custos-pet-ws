@@ -151,4 +151,25 @@ export class DiaryController {
             }
         }
     }
+
+    async erase(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const diaryId = req.params.id;
+
+            const petId = req.params.petId;
+
+            return res.status(200).json("hello there, " + ownerId + ", " + petId + ". " + diaryId);
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
 }
