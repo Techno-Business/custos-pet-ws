@@ -16,6 +16,7 @@ import { OwnerMapper } from "../owner/owner.mapper";
 import { PetRepository } from "../../infra/sequelize/repositories/PetRepository";
 import { PetMapper } from "../pet/pet.mapper";
 import { DiaryUpdateUseCase } from "./useCases/Update/DiaryUpdateUseCase";
+import {DiaryErasePetEntryUseCase} from "./useCases/Erase/DiaryErasePetEntryUseCase";
 
 const diaryMapper = new DiaryMapper();
 
@@ -33,7 +34,6 @@ const petDiaryRepository = new PetDiaryRepository(
     PetDiarySequelizeModel,
     diaryRepository,
     addressRepository,
-    diaryMapper,
 );
 
 const ownerMapper = new OwnerMapper();
@@ -73,11 +73,17 @@ const diaryUpdateUseCase = new DiaryUpdateUseCase(
     petDiaryRepository,
 );
 
+const diaryErasePetEntryUseCase = new DiaryErasePetEntryUseCase(
+    ownerRepository,
+    petDiaryRepository,
+);
+
 const diaryController = new DiaryController(
     diaryRegisterUseCase,
     diaryListUseCase,
     diaryShowUseCase,
     diaryUpdateUseCase,
+    diaryErasePetEntryUseCase,
     diaryMapper,
 );
 

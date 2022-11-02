@@ -128,4 +128,12 @@ export class PetDiaryRepository implements IPetDiaryRepository {
         return addressId;
     }
 
+    async deletePetDiary(petId: string, diaryId: string): Promise<void> {
+        await this.petDiarySequelizeModel.destroy({
+            where: {
+                pet_id: petId,
+                diary_id: diaryId,
+            }
+        });
+    }
 }

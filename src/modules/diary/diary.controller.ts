@@ -6,6 +6,7 @@ import { DiaryMapper } from "./diary.mapper";
 import { DiaryListUseCase } from "./useCases/List/DiaryListUseCase";
 import { DiaryShowUseCase } from "./useCases/Show/DiaryShowUseCase";
 import { DiaryUpdateUseCase } from "./useCases/Update/DiaryUpdateUseCase";
+import { DiaryErasePetEntryUseCase } from "./useCases/Erase/DiaryErasePetEntryUseCase";
 
 export class DiaryController {
     constructor(
@@ -13,6 +14,7 @@ export class DiaryController {
         private diaryListUseCase: DiaryListUseCase,
         private diaryShowUseCase: DiaryShowUseCase,
         private diaryUpdateUseCase: DiaryUpdateUseCase,
+        private diaryErasePetEntryUseCase: DiaryErasePetEntryUseCase,
         private diaryMapper: DiaryMapper,
     ) {
     }
@@ -160,7 +162,9 @@ export class DiaryController {
 
             const petId = req.params.petId;
 
-            return res.status(200).json("hello there, " + ownerId + ", " + petId + ". " + diaryId);
+            await this.diaryErasePetEntryUseCase.execute(ownerId, diaryId, petId);
+
+            return res.status(204).json();
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
