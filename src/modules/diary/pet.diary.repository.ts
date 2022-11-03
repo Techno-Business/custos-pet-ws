@@ -6,4 +6,5 @@ export interface IPetDiaryRepository {
     update(currentDiary: DiaryModel, newDiary: DiaryModel): Promise<void>;
     deletePetDiary(petId: string, diaryId: string): Promise<void>;
     deleteDiary(diary: DiaryModel): Promise<void>;
+    findAllByOwnerId(ownerId: string): Promise<DiaryModel[] | null>;
 }

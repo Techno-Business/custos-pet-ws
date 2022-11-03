@@ -6,12 +6,14 @@ import { IAddressRepository } from "../../../modules/diary/address.repository";
 import { v4 } from "uuid";
 import Diary from "../models/Diary";
 import Address from "../models/Address";
+import Pet from "../models/Pet";
 
 export class PetDiaryRepository implements IPetDiaryRepository {
     constructor(
         private petDiarySequelizeModel: typeof PetDiary,
         private diarySequelizeModel: typeof Diary,
         private addressSequelizeModel: typeof Address,
+        private petSequelizeModel: typeof Pet,
         private diaryRepository: IDiaryRepository,
         private addressRepository: IAddressRepository,
     ) {
@@ -166,4 +168,49 @@ export class PetDiaryRepository implements IPetDiaryRepository {
             throw (e);
         }
     }
+
+    async findAllByOwnerId(ownerId: string): Promise<DiaryModel[] | null> {
+        try {
+            const result = <DiaryModel[]> await this.petDiarySequelizeModel.sequelize?.transaction(async (t) => {
+                const petIds = await this.petSequelizeModel.findAll({
+                    attributes: ['id'],
+                    where: {
+                        owner_id: ownerId,
+                    },
+                    raw: true,
+                });
+
+                const petsIdsList = petIds.map((p) => {
+                    return Object.values(p)[0];
+                });
+
+                const diariesIds = await this.petDiarySequelizeModel.findAll({
+                    attributes: ['diary_id'],
+                    where: {
+                        pet_id: petsIdsList,
+                    },
+                    group: ['diary_id'],
+                    raw: true,
+                    transaction: t,
+                });
+
+                const areDiariesIdsEmpty = Object.keys(diariesIds).length === 0;
+                if (areDiariesIdsEmpty) {
+                    return ;
+                }
+
+                const diariesIdsList = diariesIds.map((d) => {
+                    return Object.values(d)[0];
+                });
+                const diaries = await this.diaryRepository.findAllByIds(diariesIdsList);
+
+                return diaries;
+            });
+
+            return result;
+        } catch (e) {
+            throw (e);
+        }
+    }
+
 }

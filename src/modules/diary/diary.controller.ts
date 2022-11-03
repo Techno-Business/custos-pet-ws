@@ -8,6 +8,7 @@ import { DiaryShowUseCase } from "./useCases/Show/DiaryShowUseCase";
 import { DiaryUpdateUseCase } from "./useCases/Update/DiaryUpdateUseCase";
 import { DiaryErasePetEntryUseCase } from "./useCases/Erase/DiaryErasePetEntryUseCase";
 import { DiaryDeleteUseCase } from "./useCases/Delete/DiaryDeleteUseCase";
+import {DiaryListFromOwnerUseCase} from "./useCases/ListFromOwner/DiaryListFromOwnerUseCase";
 
 export class DiaryController {
     constructor(
@@ -17,6 +18,7 @@ export class DiaryController {
         private diaryUpdateUseCase: DiaryUpdateUseCase,
         private diaryErasePetEntryUseCase: DiaryErasePetEntryUseCase,
         private diaryDeleteUseCase: DiaryDeleteUseCase,
+        private diaryListFromOwnerUseCase: DiaryListFromOwnerUseCase,
         private diaryMapper: DiaryMapper,
     ) {
     }
@@ -188,6 +190,26 @@ export class DiaryController {
             await this.diaryDeleteUseCase.execute(ownerId, diaryId);
 
             return res.status(200).json();
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    async indexOwner(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const diaries = await this.diaryListFromOwnerUseCase.execute(ownerId);
+            const diariesDto = diaries.map((d) => this.diaryMapper.toDto(d));
+
+            return res.status(200).json(diariesDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
