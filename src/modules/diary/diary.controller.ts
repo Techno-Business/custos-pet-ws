@@ -7,6 +7,7 @@ import { DiaryListUseCase } from "./useCases/List/DiaryListUseCase";
 import { DiaryShowUseCase } from "./useCases/Show/DiaryShowUseCase";
 import { DiaryUpdateUseCase } from "./useCases/Update/DiaryUpdateUseCase";
 import { DiaryErasePetEntryUseCase } from "./useCases/Erase/DiaryErasePetEntryUseCase";
+import { DiaryDeleteUseCase } from "./useCases/Delete/DiaryDeleteUseCase";
 
 export class DiaryController {
     constructor(
@@ -15,6 +16,7 @@ export class DiaryController {
         private diaryShowUseCase: DiaryShowUseCase,
         private diaryUpdateUseCase: DiaryUpdateUseCase,
         private diaryErasePetEntryUseCase: DiaryErasePetEntryUseCase,
+        private diaryDeleteUseCase: DiaryDeleteUseCase,
         private diaryMapper: DiaryMapper,
     ) {
     }
@@ -165,6 +167,27 @@ export class DiaryController {
             await this.diaryErasePetEntryUseCase.execute(ownerId, diaryId, petId);
 
             return res.status(204).json();
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    async delete(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const diaryId = req.params.id;
+
+            const deleteResWorks = this.diaryDeleteUseCase.execute(ownerId, diaryId);
+
+            return res.status(200).json(deleteResWorks);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

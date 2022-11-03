@@ -23,4 +23,8 @@ diaryRouter.delete('/:id/pets/:petId', async (req: express.Request, res: express
     return diaryController.erase(req, res);
 });
 
+diaryRouter.delete('/:id', async (req: express.Request, res: express.Response) => {
+    return diaryController.delete(req, res);
+});
+
 export default diaryRouter;
