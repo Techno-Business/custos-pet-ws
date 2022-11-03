@@ -35,12 +35,4 @@ export class AddressRepository implements IAddressRepository {
         });
     }
 
-    async deleteById(addressId: string): Promise<void> {
-        await this.addressSequelizeModel.destroy({
-            where: {
-                id: addressId,
-            }
-        });
-    }
-
 }

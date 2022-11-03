@@ -5,11 +5,13 @@ import { IDiaryRepository } from "../../../modules/diary/diary.repository";
 import { IAddressRepository } from "../../../modules/diary/address.repository";
 import { v4 } from "uuid";
 import Diary from "../models/Diary";
+import Address from "../models/Address";
 
 export class PetDiaryRepository implements IPetDiaryRepository {
     constructor(
         private petDiarySequelizeModel: typeof PetDiary,
         private diarySequelizeModel: typeof Diary,
+        private addressSequelizeModel: typeof Address,
         private diaryRepository: IDiaryRepository,
         private addressRepository: IAddressRepository,
     ) {
@@ -140,30 +142,25 @@ export class PetDiaryRepository implements IPetDiaryRepository {
     }
 
     async deleteDiary(diary: DiaryModel): Promise<void> {
-        //delete pets diaries
-        //delete diaries
-        //delete addresses
         try {
             await this.petDiarySequelizeModel.sequelize?.transaction(async (t) => {
+                const diaryId = diary.id;
+
                 await this.petDiarySequelizeModel.destroy({
                     where: {
-                        diary_id: diary.id,
+                        diary_id: diaryId,
                     },
                     transaction: t,
                 });
 
                 await this.diarySequelizeModel.destroy({
                     where: {
-                        id: diary.id,
+                        id: diaryId,
                     },
                     transaction: t,
                 });
-                //TODO:
-                //contar ocorrências do addressId na tabela diaries
-                //se ocorrências for maior que 1 não deletar
-                //se ocorrências for 1, deletar address
 
-                //await this.addressRepository.deleteById(diary.addressId);
+                //TODO: count addressId references and delete from address table if there is only one
             });
         } catch (e) {
             throw (e);

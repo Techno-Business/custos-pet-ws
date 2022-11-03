@@ -34,6 +34,7 @@ const addressRepository = new AddressRepository(
 const petDiaryRepository = new PetDiaryRepository(
     PetDiarySequelizeModel,
     DiarySequelizeModel,
+    AddressSequelizeModel,
     diaryRepository,
     addressRepository,
 );
