@@ -33,6 +33,7 @@ const addressRepository = new AddressRepository(
 
 const petDiaryRepository = new PetDiaryRepository(
     PetDiarySequelizeModel,
+    DiarySequelizeModel,
     diaryRepository,
     addressRepository,
 );
@@ -79,7 +80,11 @@ const diaryErasePetEntryUseCase = new DiaryErasePetEntryUseCase(
     petDiaryRepository,
 );
 
-const diaryDeleteUseCase = new DiaryDeleteUseCase();
+const diaryDeleteUseCase = new DiaryDeleteUseCase(
+    ownerRepository,
+    diaryRepository,
+    petDiaryRepository,
+);
 
 const diaryController = new DiaryController(
     diaryRegisterUseCase,

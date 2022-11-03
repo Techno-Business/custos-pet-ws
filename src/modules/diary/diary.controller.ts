@@ -185,9 +185,9 @@ export class DiaryController {
 
             const diaryId = req.params.id;
 
-            const deleteResWorks = this.diaryDeleteUseCase.execute(ownerId, diaryId);
+            await this.diaryDeleteUseCase.execute(ownerId, diaryId);
 
-            return res.status(200).json(deleteResWorks);
+            return res.status(200).json();
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

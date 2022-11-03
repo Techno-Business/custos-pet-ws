@@ -5,6 +5,7 @@ export class DiaryModel {
     private _petId: string[];
     private _title: string;
     private _date: string;
+    private _addressId?: string;
     private _street?: string;
     private _number?: string
     private _postalCode?: string;
@@ -19,6 +20,7 @@ export class DiaryModel {
         postalCode?: string,
         neighbourhood?: string,
         id?: string,
+        addressId?: string,
     ) {
         if (!id) {
             this._id = v4();
@@ -28,6 +30,7 @@ export class DiaryModel {
         this._petId = petId;
         this._title = title;
         this._date = date;
+        this._addressId = addressId;
         this._street = street;
         this._number = number;
         this._postalCode = postalCode;
@@ -64,6 +67,14 @@ export class DiaryModel {
 
     set date(value: string) {
         this._date = value;
+    }
+
+    get addressId(): string {
+        return this._addressId as string;
+    }
+
+    set addressId(value: string) {
+        this._addressId = value;
     }
 
     get street(): string {

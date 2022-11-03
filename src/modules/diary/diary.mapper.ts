@@ -8,6 +8,7 @@ export class DiaryMapper {
             pet_id: diary.petId,
             title: diary.title,
             date: diary.date,
+            address_id: diary?.addressId,
             street: diary?.street,
             number: diary?.number,
             postal_code: diary?.postalCode,
@@ -25,6 +26,7 @@ export class DiaryMapper {
             raw['addresses.postal_code'],
             raw['addresses.neighbourhood'],
             raw.id,
+            raw['addresses.id'],
         )
     }
 

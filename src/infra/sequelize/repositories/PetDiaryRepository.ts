@@ -4,10 +4,12 @@ import PetDiary from '../models/PetDiary'
 import { IDiaryRepository } from "../../../modules/diary/diary.repository";
 import { IAddressRepository } from "../../../modules/diary/address.repository";
 import { v4 } from "uuid";
+import Diary from "../models/Diary";
 
 export class PetDiaryRepository implements IPetDiaryRepository {
     constructor(
         private petDiarySequelizeModel: typeof PetDiary,
+        private diarySequelizeModel: typeof Diary,
         private diaryRepository: IDiaryRepository,
         private addressRepository: IAddressRepository,
     ) {
@@ -135,5 +137,36 @@ export class PetDiaryRepository implements IPetDiaryRepository {
                 diary_id: diaryId,
             }
         });
+    }
+
+    async deleteDiary(diary: DiaryModel): Promise<void> {
+        //delete pets diaries
+        //delete diaries
+        //delete addresses
+        try {
+            await this.petDiarySequelizeModel.sequelize?.transaction(async (t) => {
+                await this.petDiarySequelizeModel.destroy({
+                    where: {
+                        diary_id: diary.id,
+                    },
+                    transaction: t,
+                });
+
+                await this.diarySequelizeModel.destroy({
+                    where: {
+                        id: diary.id,
+                    },
+                    transaction: t,
+                });
+                //TODO:
+                //contar ocorrências do addressId na tabela diaries
+                //se ocorrências for maior que 1 não deletar
+                //se ocorrências for 1, deletar address
+
+                //await this.addressRepository.deleteById(diary.addressId);
+            });
+        } catch (e) {
+            throw (e);
+        }
     }
 }
