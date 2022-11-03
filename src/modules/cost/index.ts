@@ -60,7 +60,10 @@ const costListUseCase = new CostListUseCase(
     petCostRepository,
 );
 
-const costListFromOwner = new CostListFromOwnerUseCase();
+const costListFromOwner = new CostListFromOwnerUseCase(
+    ownerRepository,
+    petCostRepository,
+);
 
 const costController = new CostController(
     costRegisterUseCase,

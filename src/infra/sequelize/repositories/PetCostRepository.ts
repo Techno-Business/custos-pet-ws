@@ -66,4 +66,29 @@ export class PetCostRepository implements IPetCostRepository {
             throw (e);
         }
     }
+
+    async findAllByOwnerId(ownerId: string): Promise<string[]> {
+        try {
+            const  result = <[]> await this.petCostSequelizeModel.sequelize?.transaction(async (t) => {
+                // @ts-ignore
+                const [results, metadata] = await this.petCostSequelizeModel.sequelize?.query(
+                    "SELECT pets.id AS pet_id, pets.name AS pet_name, SUM(costs.price) AS total_price FROM costs JOIN pets_costs ON pets_costs.cost_id = costs.id JOIN pets ON pets_costs.pet_id = pets.id WHERE pets.owner_id  = :ownerId GROUP BY pets.id",
+                    {
+                        replacements: {
+                            ownerId
+                        },
+                        raw: true,
+                        transaction: t,
+                    }
+                );
+
+                return results;
+            });
+
+            return result;
+        } catch (e) {
+            throw (e);
+        }
+    }
+
 }
