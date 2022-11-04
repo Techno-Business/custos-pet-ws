@@ -5,6 +5,7 @@ import Mailjet from "node-mailjet";
 
 interface Recipients{
     Email: string;
+    Name?: string
 }
 
 
@@ -29,14 +30,17 @@ export const sendMail = ({
     const secretkey = process.env.MAILJET_SECRETKEY;
 
     const mailjet = Mailjet.apiConnect(apikey!, secretkey!);
-    const send = mailjet.post('send');
+    const send = mailjet.post('send', {version: 'v3.1'});
     const promise = send.request({
-        FromEmail: fromEmail,
-        FromName: fromName,
+        Messages:[ {From:{
+            Email: fromEmail,
+            Name: fromName
+        },
+        
         Subject: subject,
-        'Text_part': text,
-        'html-part': html,
-        Recepients: recepients
+        'TextPart': text,
+        'HTMLPart': html,
+        To: recepients}]
         
     });
     return promise;

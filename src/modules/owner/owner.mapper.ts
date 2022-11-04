@@ -9,6 +9,7 @@ export class OwnerMapper {
             last_name: owner.lastName,
             email: owner.email.valueOf(),
             password: owner.password.valueOf(),
+            password_validation_key: owner?.passwordValidationKey ? owner?.passwordValidationKey : ''
         }
     }
 
@@ -19,6 +20,7 @@ export class OwnerMapper {
             raw.email,
             raw.password,
             raw.id,
+            raw.password_validation_key,
         );
     }
 
@@ -28,6 +30,7 @@ export class OwnerMapper {
             firstName: owner.firstName,
             lastName: owner.lastName,
             email: owner.email,
+            passwordValidationKey: owner.passwordValidationKey,
         }
     }
 }

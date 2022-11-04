@@ -6,11 +6,14 @@ import { validate } from "class-validator";
 import { OwnerMapper } from "./owner.mapper";
 import { OwnerSignInDto } from "./useCases/SignIn/OwnerSignInDto";
 import { OwnerSignInUseCase } from "./useCases/SignIn/OwnerSignInUseCase";
+import { sendMail } from '../../infra/email';
+import { RecoveryPasswordCaseUse } from './useCases/RecoverPassword/RecoveryPasswordCaseUse';
 
 export class OwnerController {
     constructor(
         private ownerSignUpUseCase: OwnerSignUpUseCase,
         private ownerSignInUseCase: OwnerSignInUseCase,
+        private recoveryPasswordCaseUse: RecoveryPasswordCaseUse,
         private ownerMapper: OwnerMapper,
     ) {
     }
@@ -78,4 +81,36 @@ export class OwnerController {
             }
         }
     }
+
+    async recover(req: Request, res: Response){
+        const fromEmail = process.env.FROM_EMAIL;
+        const emailTo = req.body.email
+        
+            const code = await this.recoveryPasswordCaseUse.execute(emailTo);
+            if (code === 'owner not found'){
+                return res.status(400).json('owner email not found');
+            }
+        
+            // const {response, body} = await sendMail({
+            //     fromEmail: fromEmail!,
+            //     fromName: 'Equipe Techbusiness',
+            //     subject: '[Equipe Techbusiness] - Recuperação de Senha',
+            //     html: `<h1> Recuperação de email </h1> <p> Digite o seguinte código para recuperar seu email  </p> <p> <b> ${code} </b> </p>`,
+            //     recepients: [{Email: emailTo}]}
+            // );
+            
+            // if (response.status != 200){
+                // return res.status(400).json({'type': 'error on email sending',
+                //                               'statusEmail': response.status,
+                //                               'errorEmail': body
+                //                             });
+            // }
+            
+            
+
+            return res.status(200).json( 'Email sent successfully!' );
+        
+        
+    }
+
 }

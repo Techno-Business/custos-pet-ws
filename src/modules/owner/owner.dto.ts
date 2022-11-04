@@ -3,4 +3,5 @@ export interface OwnerDto {
     firstName: string;
     lastName: string;
     email: string;
+    passwordValidationKey?: string;
 }

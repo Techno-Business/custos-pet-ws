@@ -8,6 +8,7 @@
     "build": "tsc -p tsconfig.json && npx sequelize-cli db:migrate",
     "start": "node dist/index.js",
     "migrate": "npx sequelize-cli db:migrate",
+    "makemigration": "npx sequelize-cli migration:create",
     "demigrate": "npx sequelize-cli db:migrate:undo"
   },
   "author": "",

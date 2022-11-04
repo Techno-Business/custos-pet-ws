@@ -1,6 +1,10 @@
 import { ProcessCredentials } from 'aws-sdk';
 import express from 'express';
 import { sendMail } from '../../infra/email';
+import Owner from '../../infra/sequelize/models/Owner';
+import { OwnerRepository } from '../../infra/sequelize/repositories/OwnerRepository';
+import OwnerSequelizeModel from '../../infra/sequelize/models/Owner';
+
 
 import { ownerController } from "./index";
 
@@ -14,18 +18,8 @@ ownerRouter.post('/signin', async (req: express.Request, res: express.Response) 
     return ownerController.signIn(req, res);
 });
 
-ownerRouter.get('/recover', async (req: express.Request, res: express.Response) => {
-
-    const {response, body} = await sendMail({
-        fromEmail:'viniciusecortez@outlook.com',
-        fromName: 'Vinicius',
-        subject: 'Test test',
-        text: 'Um belo texto',
-        recepients: [{Email: 'viniciusecortez@gmail.com'}]}
-    );
-    
-    return res.status(response.status).json(body);
-    
+ownerRouter.post('/recover', async (req: express.Request, res: express.Response)=>{
+    return ownerController.recover(req, res);
 });
 
 

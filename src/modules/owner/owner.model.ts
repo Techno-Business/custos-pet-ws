@@ -6,6 +6,8 @@ export class OwnerModel {
     private _lastName: string;
     private _email: string;
     private _password: string;
+    private _passwordValidationKey?: string;
+
 
     constructor(
         firstName: string,
@@ -13,6 +15,7 @@ export class OwnerModel {
         email: string,
         password: string,
         id?: string,
+        passwordValidationKey?: string
     ) {
         if (!id) {
             this._id = v4();
@@ -23,6 +26,7 @@ export class OwnerModel {
         this._lastName = lastName;
         this._email = email;
         this._password = password;
+        this._passwordValidationKey = passwordValidationKey;
     }
 
     set id(value: string) {
@@ -45,6 +49,10 @@ export class OwnerModel {
         this._password = value;
     }
 
+    set passwordValidationKey(value: string){
+        this._passwordValidationKey;
+    }
+
     public get id() {
         return this._id as string;
     }
@@ -64,4 +72,10 @@ export class OwnerModel {
     public get password() {
         return this._password;
     }
+
+    public get passwordValidationKey(){
+        
+        return this._passwordValidationKey ? this._passwordValidationKey : '';
+    }
+
 }

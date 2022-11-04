@@ -10,6 +10,16 @@ export class OwnerRepository implements IOwnerRepository {
     ) {
     }
 
+
+    async existsByPasswordValidationKey(passwordValidationKey: string): Promise<boolean> {
+        let owner = await this.ownerSequelizeModel.findOne({where: {
+            passwordValidationKey: passwordValidationKey
+        }});
+       console.log(owner);
+
+        return !!owner;
+    }
+
     async existsByEmail(email: string): Promise<boolean> {
         const owner = await this.ownerSequelizeModel.findOne({
             where: {
@@ -36,6 +46,11 @@ export class OwnerRepository implements IOwnerRepository {
         return this.ownerMapper.toModel(
             await this.ownerSequelizeModel.create(ownerEntity)
         );
+    }
+
+    async update(owner: OwnerModel, toUpdate: any):Promise<void>{
+        console.log(toUpdate)
+        await this.ownerSequelizeModel.update(toUpdate, {where:{id: owner.id }});
     }
 
     async findByEmail(email: string): Promise<OwnerModel | null> {

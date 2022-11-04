@@ -28,6 +28,11 @@ const Owner = db.define('owners', {
             len: [8, 64],
         },
     },
+    
+    passwordValidationKey:{
+        type: DataTypes.STRING(10),
+        allowNull: true,
+    }
 },{
     timestamps: true,
     createdAt: 'created_at',
