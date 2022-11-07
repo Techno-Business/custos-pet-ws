@@ -3,10 +3,14 @@ import { PetRepository } from "./PetRepository";
 import PetCost from "../models/PetCost";
 import { CostModel } from "../../../modules/cost/cost.model";
 import { CostRepository } from "./CostRepository";
+import Cost from "../models/Cost";
+import Details from "../models/Details";
 
 export class PetCostRepository implements IPetCostRepository {
     constructor(
         private petCostSequelizeModel: typeof PetCost,
+        private costSequelizeModel: typeof Cost,
+        private detailsSequelizeModel: typeof Details,
         private petRepository: PetRepository,
         private costRepository: CostRepository,
     ) {
@@ -86,6 +90,39 @@ export class PetCostRepository implements IPetCostRepository {
             });
 
             return result;
+        } catch (e) {
+            throw (e);
+        }
+    }
+
+    async delete(cost: CostModel): Promise<void> {
+        try {
+            await this.costSequelizeModel.sequelize?.transaction(async (t) => {
+                const costId = cost.id;
+                const detailsId = cost.detailsId;
+
+                await this.petCostSequelizeModel.destroy({
+                    where: {
+                        cost_id: costId,
+                    },
+                    transaction: t,
+                });
+
+                await this.costSequelizeModel.destroy({
+                    where: {
+                        id: costId,
+                    },
+                    transaction: t,
+                });
+
+                await this.detailsSequelizeModel.destroy({
+                    where: {
+                        id: detailsId,
+                    },
+                    transaction: t,
+                });
+
+            });
         } catch (e) {
             throw (e);
         }

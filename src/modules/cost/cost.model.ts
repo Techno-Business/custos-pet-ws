@@ -7,6 +7,7 @@ export class CostModel {
     private _type: CostType;
     private _date: string;
     private _price: number;
+    private _detailsId?: string;
     private _description: string;
     private _brand?: string;
     private _weight?: number;
@@ -22,6 +23,7 @@ export class CostModel {
         weight?: number,
         serviceType?: string,
         id?: string,
+        detailsId?: string,
     ) {
         if (!id) {
             this._id = v4();
@@ -32,6 +34,7 @@ export class CostModel {
         this._type = type;
         this._date = date;
         this._price = price;
+        this._detailsId = detailsId;
         this._description = description;
         this._brand = brand;
         this._weight = weight;
@@ -76,6 +79,14 @@ export class CostModel {
 
     set price(value: number) {
         this._price = value;
+    }
+
+    get detailsId(): string {
+        return this._detailsId as string;
+    }
+
+    set detailsId(value: string) {
+        this._detailsId = value;
     }
 
     get description(): string {

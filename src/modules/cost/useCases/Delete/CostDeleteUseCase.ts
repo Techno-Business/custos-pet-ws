@@ -1,15 +1,16 @@
 import { IOwnerRepository } from "../../../owner/owner.repository";
 import { ICostRepository } from "../../cost.repository";
-import {CostModel} from "../../cost.model";
+import { IPetCostRepository } from "../../pet.cost.repository";
 
 export class CostDeleteUseCase {
     constructor(
         private ownerRepository: IOwnerRepository,
         private costRepository: ICostRepository,
+        private petCostRepository: IPetCostRepository,
     ) {
     }
 
-    async execute(ownerId: string, costId: string): Promise<string> {
+    async execute(ownerId: string, costId: string): Promise<void> {
         if (!await this.ownerRepository.existsById(ownerId)) {
             throw new Error("Nonexistent owner of id " + ownerId);
         }
@@ -20,6 +21,6 @@ export class CostDeleteUseCase {
             throw new Error("Nonexistent cost of id " + costId);
         }
 
-        return "hello there, " + ownerId + ", " + costId;
+        await this.petCostRepository.delete(cost);
     }
 }

@@ -152,9 +152,9 @@ export class CostController {
 
             const costId = req.params.id;
 
-            const works = await this.costDeleteUseCase.execute(ownerId, costId);
+            await this.costDeleteUseCase.execute(ownerId, costId);
 
-            return res.status(200).json(works);
+            return res.status(204).json();
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
