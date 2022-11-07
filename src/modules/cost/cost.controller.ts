@@ -12,6 +12,7 @@ import { CostMapper } from "./cost.mapper";
 import { CostShowUseCase } from "./useCases/Show/CostShowUseCase";
 import { CostListUseCase } from "./useCases/List/CostListUseCase";
 import { CostListFromOwnerUseCase } from "./useCases/ListFromOwner/CostListFromOwnerUseCase";
+import { CostDeleteUseCase } from "./useCases/Delete/CostDeleteUseCase";
 
 export class CostController {
     constructor(
@@ -19,6 +20,7 @@ export class CostController {
         private costShowUseCase: CostShowUseCase,
         private costListUseCase: CostListUseCase,
         private costListFromOwnerUseCase: CostListFromOwnerUseCase,
+        private costDeleteUseCase: CostDeleteUseCase,
         private costMapper: CostMapper,
     ) {
     }
@@ -132,6 +134,27 @@ export class CostController {
             const costs = await this.costListFromOwnerUseCase.execute(ownerId);
 
             return res.status(200).json(costs);
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    async delete(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const costId = req.params.id;
+
+            const works = await this.costDeleteUseCase.execute(ownerId, costId);
+
+            return res.status(200).json(works);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

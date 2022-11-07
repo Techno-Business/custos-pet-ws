@@ -13,7 +13,8 @@ import { CostShowUseCase } from "./useCases/Show/CostShowUseCase";
 import { OwnerRepository } from "../../infra/sequelize/repositories/OwnerRepository";
 import { OwnerMapper } from "../owner/owner.mapper";
 import { CostListUseCase } from "./useCases/List/CostListUseCase";
-import {CostListFromOwnerUseCase} from "./useCases/ListFromOwner/CostListFromOwnerUseCase";
+import { CostListFromOwnerUseCase } from "./useCases/ListFromOwner/CostListFromOwnerUseCase";
+import { CostDeleteUseCase } from "./useCases/Delete/CostDeleteUseCase";
 
 const ownerMapper = new OwnerMapper();
 
@@ -60,16 +61,22 @@ const costListUseCase = new CostListUseCase(
     petCostRepository,
 );
 
-const costListFromOwner = new CostListFromOwnerUseCase(
+const costListFromOwnerUseCase = new CostListFromOwnerUseCase(
     ownerRepository,
     petCostRepository,
+);
+
+const costDeleteUseCase = new CostDeleteUseCase(
+    ownerRepository,
+    costRepository,
 );
 
 const costController = new CostController(
     costRegisterUseCase,
     costShowUseCase,
     costListUseCase,
-    costListFromOwner,
+    costListFromOwnerUseCase,
+    costDeleteUseCase,
     costMapper,
 );
 
