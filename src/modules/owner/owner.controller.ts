@@ -91,20 +91,20 @@ export class OwnerController {
                 return res.status(400).json('owner email not found');
             }
         
-            // const {response, body} = await sendMail({
-            //     fromEmail: fromEmail!,
-            //     fromName: 'Equipe Techbusiness',
-            //     subject: '[Equipe Techbusiness] - Recuperação de Senha',
-            //     html: `<h1> Recuperação de email </h1> <p> Digite o seguinte código para recuperar seu email  </p> <p> <b> ${code} </b> </p>`,
-            //     recepients: [{Email: emailTo}]}
-            // );
+            const {response, body} = await sendMail({
+                fromEmail: fromEmail!,
+                fromName: 'Equipe Techbusiness',
+                subject: '[Equipe Techbusiness] - Recuperação de Senha',
+                html: `<h1> Recuperação de email </h1> <p> Digite o seguinte código para recuperar seu email  </p> <p> <b> ${code} </b> </p>`,
+                recepients: [{Email: emailTo}]}
+            );
             
-            // if (response.status != 200){
-                // return res.status(400).json({'type': 'error on email sending',
-                //                               'statusEmail': response.status,
-                //                               'errorEmail': body
-                //                             });
-            // }
+            if (response.status != 200){
+                return res.status(400).json({'type': 'error on email sending',
+                                              'statusEmail': response.status,
+                                              'errorEmail': body
+                                            });
+            }
             
             
 
