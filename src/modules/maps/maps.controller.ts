@@ -1,9 +1,12 @@
 import { Request, Response } from 'express';
 import { MapsSearchPlacesDto } from "./useCases/SearchPlaces/MapsSearchPlacesDto";
 import { validate } from "class-validator";
+import { MapsSearchPlacesUseCase } from "./useCases/SearchPlaces/MapsSearchPlacesUseCase";
 
 export class MapsController {
-    constructor() {
+    constructor(
+        private mapsSearchPlacesUseCase: MapsSearchPlacesUseCase,
+    ) {
     }
 
     async searchPlaces(req: Request, res: Response) {
@@ -21,7 +24,9 @@ export class MapsController {
                 return res.status(400).json(validationErrors.map(v => v.constraints));
             }
 
-            return res.status(200).json("hello there, " + mapsSearchPlacesDto);
+            const placesDto = await this.mapsSearchPlacesUseCase.execute(mapsSearchPlacesDto);
+
+            return res.status(200).json(placesDto);
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {
