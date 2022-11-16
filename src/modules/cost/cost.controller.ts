@@ -10,13 +10,17 @@ import {
 import { CostRegisterUseCase } from "./useCases/Register/CostRegisterUseCase";
 import { CostMapper } from "./cost.mapper";
 import { CostShowUseCase } from "./useCases/Show/CostShowUseCase";
-import {CostListUseCase} from "./useCases/List/CostListUseCase";
+import { CostListUseCase } from "./useCases/List/CostListUseCase";
+import { CostListFromOwnerUseCase } from "./useCases/ListFromOwner/CostListFromOwnerUseCase";
+import { CostDeleteUseCase } from "./useCases/Delete/CostDeleteUseCase";
 
 export class CostController {
     constructor(
         private costRegisterUseCase: CostRegisterUseCase,
         private costShowUseCase: CostShowUseCase,
         private costListUseCase: CostListUseCase,
+        private costListFromOwnerUseCase: CostListFromOwnerUseCase,
+        private costDeleteUseCase: CostDeleteUseCase,
         private costMapper: CostMapper,
     ) {
     }
@@ -111,6 +115,46 @@ export class CostController {
             const costTotal = costsDto?.map(c => c.price).reduce((prev, curr) => prev + curr, 0);
 
             return res.status(200).json({costsDto, costTotal});
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    async indexOwner(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const costs = await this.costListFromOwnerUseCase.execute(ownerId);
+
+            return res.status(200).json(costs);
+        } catch (e) {
+            console.log(e);
+            if (e instanceof Error) {
+                return res.status(400).json({
+                    message: e.message
+                });
+            } else {
+                return res.status(400).json('An unexpected error has occurred.');
+            }
+        }
+    }
+
+    async delete(req: Request, res: Response) {
+        try {
+            const ownerId = req.params.ownerId;
+
+            const costId = req.params.id;
+
+            await this.costDeleteUseCase.execute(ownerId, costId);
+
+            return res.status(204).json();
         } catch (e) {
             console.log(e);
             if (e instanceof Error) {

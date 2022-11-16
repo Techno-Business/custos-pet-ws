@@ -15,4 +15,12 @@ costRouter.get('/pets/:petId', async (req: express.Request, res: express.Respons
    return costController.index(req, res);
 });
 
+costRouter.get('/', async (req: express.Request, res: express.Response) => {
+    return costController.indexOwner(req, res);
+});
+
+costRouter.delete('/:id', async (req: express.Request, res: express.Response) => {
+    return costController.delete(req, res);
+});
+
 export default costRouter;

@@ -28,6 +28,7 @@ export class CostMapper {
             raw['details.weight'],
             raw['details.service_type'],
             raw.id,
+            raw['details.id'],
         )
     }
 
