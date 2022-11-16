@@ -13,7 +13,7 @@ export class MapsSearchPlacesUseCase {
         const longitude = dtoData.longitude;
         const placeType = dtoData.placeType;
 
-        let fetchPlacesData = await this.fetchPlaces(latitude, longitude, placeType);
+        const fetchPlacesData = await this.fetchPlaces(latitude, longitude, placeType);
 
         const placesDto = fetchPlacesData.map((e: any) => ({
             id: e.place_id,
