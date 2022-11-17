@@ -70,6 +70,9 @@ export class DiaryRepository implements IDiaryRepository {
             where: {
                 id: diariesIds,
             },
+            order: [
+                ["date", "DESC"]
+            ],
             include: {
                 model: Address,
                 as: 'addresses',
